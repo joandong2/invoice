@@ -2,26 +2,163 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+body {
+	color: rgb(var(--foreground-rgb));
+	font-family: var(--leagueSpartan-font);
+	font-size: 14px;
+	font-weight: medium;
+	line-height: 22px;
 }
 
-@media (prefers-color-scheme: dark) {
+h1 {
+	font-size: 36px;
+	line-height: 33px;
+	letter-spacing: -1px;
+	font-weight: bold;
+}
+
+h2 {
+	font-size: 24px;
+	lien-height: 22px;
+	letter-spacing: -0.75px;
+	font-weight: bold;
+}
+
+.light .body-bg {
+	background-color: #f8f8fb;
+	color: #000;
+}
+
+.dark .body-bg {
+	background-color: #141625;
+	color: #fff;
+}
+
+.sidebar {
+	background-color: #1e2139;
+	color: #fff;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	position: fixed;
+	top: 0;
+	lef: 0;
+}
+
+.invoices {
+	background: white;
+	borde-radius: 10px;
+	display: flex;
+	margin-bottom: 20px;
+	padding: 30px 20px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	justify-content: space-between;
+	gap: 20px;
+	width: 100%;
+}
+
+.invoices:last-child {
+	margin-bottom: 0;
+}
+
+.dark .invoices {
+	color: #fff;
+	background: #1e2139;
+}
+
+.dark .invoices .date {
+	color: #dfe3fa;
+}
+
+.invoices .paid {
+	background: rgba(243, 252, 249, 0.3);
+	color: #33d69f;
+}
+
+.invoices .pending {
+	background: rgba(255, 248, 240, 0.3);
+	color: #ff8f00;
+}
+
+.invoices .draft {
+	color: #373b53;
+	background: #f3f3f5;
+}
+
+.dark .invoices .draft {
+	background: #292c44;
+	color: #dfe3fa;
+}
+
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
