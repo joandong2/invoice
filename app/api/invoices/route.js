@@ -25,15 +25,15 @@ export const POST = async (request) => {
 	}
 };
 
-export const GET = async () => {
-	try {
-		const invoices = await prisma.invoice.findMany();
+// export const GET = async () => {
+// 	try {
+// 		const invoices = await prisma.invoice.findMany();
 
-		return NextResponse.json(invoices);
-	} catch (err) {
-		return NextResponse.json(
-			{ message: "Invoice Error", err },
-			{ status: 500 }
-		);
-	}
-};
+// 		return NextResponse.json(invoices);
+// 	} catch (err) {
+// 		return NextResponse.json(
+// 			{ message: "Invoice Error", err },
+// 			{ status: 500 }
+// 		);
+// 	}
+// };

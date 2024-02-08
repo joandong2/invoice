@@ -1,12 +1,19 @@
+export interface Item {
+	invoiceID: string;
+	itemName: string;
+	itemQuantity: number;
+	itemPrice: number;
+}
+
 export interface Invoice {
-	id: number;
 	invoiceCode: string;
 	description: string;
 	status: string;
 	amount: number;
-	paymentDue: Date;
+	invoiceDate: Date;
+	paymentTerms: string;
 	createdAt: Date;
-	udpatedAt: Date;
+	udpatedAt: Date ;
 	billFromStreetAddress: string;
 	billFromCity: string;
 	billFromPostcode: string;
@@ -17,14 +24,12 @@ export interface Invoice {
 	clientCity: string;
 	clientPostCode: string;
 	clientCountry: string;
+	items?: Item[];
 }
 
 export interface InvoiceStore {
 	status: string;
-	messages: string[],
+	messages: string[];
 	theme: string;
 	invoices: Invoice[];
-	fetchInvoices: (url: string) => void;
-	addInvoice: () => void;
-	removeInvoice: () => void;
 }

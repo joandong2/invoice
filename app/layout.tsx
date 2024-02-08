@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { League_Spartan } from "next/font/google";
 import { leagueSpartan, roboto } from "./utilities/font";
 import "./globals.css";
+import Sidebar from "./components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,10 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${leagueSpartan.variable} ${roboto.variable} `}>
-				{children}
+				<Sidebar />
+				<div className="h-full w-[95%] lg:w-3/4 xl:w-1/2 mx-auto pt-[120px] lg:pt-[80px]">
+					<main>{children}</main>
+				</div>
 			</body>
 		</html>
 	);
