@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Sidebar = () => {
 
@@ -15,13 +16,15 @@ const Sidebar = () => {
 		<div className="w-full h-[100%] lg:w-[100px] sidebar text-center z-50">
 			<div className="lg:h-[100%] flex lg:flex-col justify-between align-middle text-center">
 				<span className="items-center flex justify-center px-4 py-6 bg-[#9277ff] rounded-tr-[15px]">
-					<Image
-						src="/assets/logo.svg"
-						width="40"
-						height="40"
-						alt="Image Best Gear"
-						className=""
-					/>
+					<Link href={`/`}>
+						<Image
+							src="/assets/logo.svg"
+							width="40"
+							height="40"
+							alt="Image Best Gear"
+							className=""
+						/>
+					</Link>
 				</span>
 				<span className="flex lg:flex-col gap-3 justify-center items-center">
 					<span className="p-4 cursor-pointer" onClick={handleOnclick}>

@@ -7,8 +7,7 @@ import { prisma } from "@/prisma";
 import { Invoice } from "@/lib/types";
 import Link from "next/link";
 
-const InvoicePage = async () => {
-
+const getInvoices = async () => {
 	const invoices = await prisma.invoice.findMany({
 		orderBy: {
 			invoiceDate: "desc",
@@ -17,6 +16,12 @@ const InvoicePage = async () => {
 			invoiceItems: true,
 		},
 	});
+
+	return invoices;
+}
+
+const InvoicePage = async () => {
+	const invoices = await getInvoices();
 
 	return (
 		<>

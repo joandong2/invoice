@@ -70,32 +70,32 @@ h2 {
 	color: #dfe3fa;
 }
 
-.invoices .paid {
+.paid {
 	background: #f3fcf9;
 	color: #33d69f;
 }
 
-.invoices .pending {
+.pending {
 	background: #fff8f0;
 	color: #ff8f00;
 }
 
-.invoices .draft {
+.draft {
 	background: rgba(243, 243, 245, 0.7);
 	color: #373b53;
 }
 
-.dark .invoices .draft {
+.dark  .draft {
 	background: #292c44;
 	color: #dfe3fa;
 }
 
-.dark .invoices .pending {
+.dark  .pending {
 	background: #2b2736;
 	color: #ff8f00;
 }
 
-.dark .invoices .paid {
+.dark  .paid {
 	background: rgba(31, 43, 63);
 	color: #33d69f;
 }

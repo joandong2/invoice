@@ -19,9 +19,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={`${leagueSpartan.variable} ${roboto.variable} `}>
+			<body className={`${leagueSpartan.variable} ${roboto.variable} light h-[100%]`}>
 				<Sidebar />
-				<div className="h-full w-[95%] lg:w-3/4 xl:w-1/2 mx-auto pt-[120px] lg:pt-[80px]">
+				<div className="h-full w-[95%] min-h-screen lg:w-3/4 xl:w-1/2 mx-auto pt-[120px] lg:pt-[80px]">
 					<main>{children}</main>
 				</div>
 			</body>
