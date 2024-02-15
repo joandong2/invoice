@@ -6,7 +6,7 @@ body {
 	color: rgb(var(--foreground-rgb));
 	font-family: var(--leagueSpartan-font);
 	font-size: 15px;
-	font-weight: medium;
+	font-weight: 500;
 	line-height: 22px;
 }
 
@@ -26,7 +26,7 @@ h2 {
 
 .light {
 	background-color: #f8f8fb;
-	color: #000;
+	color: #858BB2;
 }
 
 .dark {

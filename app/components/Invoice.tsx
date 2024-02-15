@@ -86,8 +86,10 @@ const InvoicePage = async () => {
 							<span className="invoices" key={invoice.invoiceCode}>
 								<span className="hidden md:flex w-full justify-evenly items-center gap-10">
 									<span className="font-bold text-[22px]">
-										<span className="text-[#888eb0]">#</span>
-										{invoice.invoiceCode}
+										#
+										<span className="text-[#0c0e16]">
+											{invoice.invoiceCode}
+										</span>
 									</span>
 									<span className="date text-[#888eb0]  font-medium">
 										{invoice.invoiceDate.toISOString()}
@@ -95,7 +97,7 @@ const InvoicePage = async () => {
 									<span className="font-medium text-[#888eb0] mr-[40px]">
 										{invoice.clientName}
 									</span>
-									<span className="font-bold text-[22px]">{`
+									<span className="font-bold text-[22px] text-[#0c0e16]">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",
@@ -107,13 +109,15 @@ const InvoicePage = async () => {
 										<span className="capitalize">{invoice.status}</span>
 									</span>
 									<span>
-										<Link href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}>
+										<Link
+											href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
+										>
 											<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
 										</Link>
 									</span>
 								</span>
 							</span>
-						))
+					  ))
 					: "No invoices.."}
 			</span>
 		</>
