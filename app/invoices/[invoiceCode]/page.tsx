@@ -3,6 +3,7 @@ import React from 'react'
 import { FaCircle } from 'react-icons/fa';
 import { format } from "date-fns";
 import { Item } from '@/lib/types';
+import SingleInvoiceButtons from '@/app/components/SingleInvoiceButtons';
 
 const getInvoice = async (code: string) => {
 	try {
@@ -39,17 +40,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 									<span className="capitalize">{invoice.status}</span>
 								</span>
 							</span>
-							<span className="flex gap-4 w-full justify-end">
-								<button className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] py-4 px-8 border-none">
-									Edit
-								</button>
-								<button className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none">
-									Delete
-								</button>
-								<button className="btn text-[16px] text-[#fff] font-bold bg-[#7c5dfa] rounded-[25px] py-4 px-8 border-none">
-									Mark as Paid
-								</button>
-							</span>
+							<SingleInvoiceButtons invoice={invoice} />
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">
