@@ -40,7 +40,8 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 									<span className="capitalize">{invoice.status}</span>
 								</span>
 							</span>
-							<SingleInvoiceButtons invoice={invoice} />
+							{/* <SingleInvoiceButtons invoice={invoice} /> */}
+							<DeleteButton invoice={invoice} />
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">

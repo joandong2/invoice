@@ -56,3 +56,7 @@ export const createInvoice = async (data: Inputs) => {
 		}
 	}
 };
+
+export const deleteInvoice = () => {
+
+}
