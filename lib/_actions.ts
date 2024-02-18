@@ -4,13 +4,11 @@ import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
+import { Invoice } from "@prisma/client";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
 export const createInvoice = async (data: Inputs) => {
-
-	// console.log(data.invoiceCode);
-	// return;
 
 	if(data.itemLists.length < 0) {
 		return { success: false, error: 'Item count must be greater than 0!' }
@@ -57,6 +55,10 @@ export const createInvoice = async (data: Inputs) => {
 	}
 };
 
-export const deleteInvoice = () => {
+export const deleteInvoice = async (data : string) => {
+
+	return {
+		status: "success"
+	}
 
 }

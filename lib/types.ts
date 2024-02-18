@@ -28,8 +28,7 @@ export interface Invoice {
 }
 
 export interface InvoiceStore {
-	status: string;
+	alert: boolean;
 	messages: string[];
 	theme: string;
-	invoices: Invoice[];
 }

@@ -4,6 +4,7 @@ import { FaCircle } from 'react-icons/fa';
 import { format } from "date-fns";
 import { Item } from '@/lib/types';
 import SingleInvoiceButtons from '@/app/components/SingleInvoiceButtons';
+import DeleteButton from '@/app/components/DeleteButton';
 
 const getInvoice = async (code: string) => {
 	try {
