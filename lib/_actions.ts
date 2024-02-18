@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { Invoice } from "@prisma/client";
+import { useInvoiceStore } from "./store/store";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -57,8 +58,33 @@ export const createInvoice = async (data: Inputs) => {
 
 export const deleteInvoice = async (data : string) => {
 
-	return {
-		status: "success"
+	const invoiceItems = await prisma.invoiceItem.findMany({
+		where: {
+			invoiceID: data,
+		},
+	});
+
+	// Delete or update related invoice items
+	for (const item of invoiceItems) {
+		// Delete related invoice item
+		await prisma.invoiceItem.delete({
+			where: { id: item.id },
+		});
+		// Or update related invoice item to remove the reference to the invoice
+		// await prisma.invoiceItem.update({
+		//   where: { id: item.id },
+		//   data: { invoiceId: null },
+		// });
 	}
 
+	await prisma.invoice.delete({
+		where: {
+			invoiceCode: data,
+		},
+	});
+
+	return {
+		status: "success",
+		data,
+	};
 }

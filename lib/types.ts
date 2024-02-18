@@ -26,9 +26,3 @@ export interface Invoice {
 	clientCountry: string;
 	items?: Item[];
 }
-
-export interface InvoiceStore {
-	alert: boolean;
-	messages: string[];
-	theme: string;
-}
