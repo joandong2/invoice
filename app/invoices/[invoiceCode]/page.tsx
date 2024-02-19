@@ -3,10 +3,9 @@ import React from 'react'
 import { FaCircle } from 'react-icons/fa';
 import { format } from "date-fns";
 import { Item } from '@/lib/types';
-import DeleteButton from '@/app/components/DeleteButton';
 import Link from 'next/link';
-import PaidButton from '@/app/components/PaidButton';
 import { getInvoice } from '@/lib/_actions';
+import Buttons from '@/app/components/Buttons';
 
 
 const Page = async ({ params }: { params: { invoiceCode: string } }) => {
@@ -28,8 +27,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 								</span>
 							</span>
 							{/* <SingleInvoiceButtons invoice={invoice} /> */}
-							<DeleteButton invoice={invoice} />
-							<PaidButton invoice={invoice} />
+							<Buttons invoiceCode={invoice.invoiceCode}/>
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">

@@ -3,9 +3,9 @@ import { devtools, persist } from "zustand/middleware";
 
 type InvoiceStore = {
 	alert: boolean;
-	buttonState: string;
-	toggleAlert: (status : boolean) => void;
-	setButtonState: (action : string) => void;
+	alertState: string;
+	setAlertState: (action: string) => void;
+	toggleAlert: (status: boolean) => void;
 	//messages: string[];
 	//theme: string;
 };
@@ -14,9 +14,9 @@ export const useInvoiceStore = create<InvoiceStore>()(
 	devtools(
 		(set) => ({
 			alert: false,
-			buttonState: "",
-			toggleAlert: (status) => set((state) => ({ alert: status })),
-			setButtonState: (action) => set((state) => ({ buttonState: action })),
+			alertState: "",
+			toggleAlert: (status) => set(() => ({ alert: status })),
+			setAlertState: (action) => set(() => ({ alertState: action })),
 			//messages: [],
 			//theme: "light",
 		}),

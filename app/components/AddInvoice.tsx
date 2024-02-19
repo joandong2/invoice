@@ -7,12 +7,14 @@ import { useForm, SubmitHandler, useFieldArray, useWatch } from "react-hook-form
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
+import router from "next/router";
+import toast from "react-hot-toast";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
 const SidebarContent = () => {
 	const [itemsList, setItemsList] = useState<any>([]);
-	const [status, setStatus] = useState<string>("");
+	//const [status, setStatus] = useState<string>("");
 
 	const {
 			register,
@@ -44,6 +46,9 @@ const SidebarContent = () => {
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await createInvoice(data);
 		console.log('result', result);
+		if (result?.status == "success") {
+			toast.success("Invoice Created", {});
+		}
 		reset();
 	};
 
@@ -288,8 +293,11 @@ const SidebarContent = () => {
 								</span>
 								<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
 									{itemsList.itemLists && itemsList.itemLists.length > index
-										? Number(itemsList.itemLists[index].price) *
-										  Number(itemsList.itemLists[index].qty)
+										? (Number(itemsList.itemLists[index].price) *
+										  Number(itemsList.itemLists[index].qty)).toLocaleString("en-US", {
+									style: "currency",
+									currency: "USD",
+								})
 										: 0}
 								</span>
 								<span
