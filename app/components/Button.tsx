@@ -12,16 +12,24 @@ interface InvoiceCode {
 	invoiceCode: string
 }
 
-const DeleteButton = ({invoice} : {invoice : Invoice}) => {
+const Button = ({invoice} : {invoice : Invoice}) => {
 	const { invoiceCode } = invoice;
 	const alert = useInvoiceStore((state) => state.alert);
 	const toggleAlert = useInvoiceStore((state) => state.toggleAlert);
-	const [formDeleteSubmit, formDeleteSubmitState] = useState<boolean>(false);
+	const buttonState = useInvoiceStore((state) => state.buttonState);
+	const setButtonState = useInvoiceStore((state) => state.setButtonState)
+	const [formSubmit, formSubmitState] = useState<boolean>(false);
 	const router = useRouter();
 
 	const {
 		register,
 		handleSubmit,
+		watch,
+		setValue,
+		reset,
+		trigger,
+		control,
+		formState: { errors },
 	} = useForm<InvoiceCode>({
 		defaultValues: {
 			invoiceCode: invoice.invoiceCode,
@@ -29,18 +37,17 @@ const DeleteButton = ({invoice} : {invoice : Invoice}) => {
 	});
 
     const processDeleteForm: SubmitHandler<InvoiceCode> = async (data) => {
-			if (formDeleteSubmit) {
+			if (formSubmit) {
 				// const result = await deleteInvoice(data.invoiceCode);
 				// console.log(result);
 				// if (result.status === "success") {
-					toggleAlert(false);
-					router.refresh();
-					toast.success("Invoice Deleted", {});
-				//}
-				router.push('/')
-				toggleAlert(false);
+				// 	toggleAlert(false);
+                // 	router.refresh();
+				// 	toast.success("Invoice Deleted", {});
+				// }
+				// router.push('/')
+				console.log('delete')
 			}
-
 		};
 
   	return (
@@ -63,7 +70,7 @@ const DeleteButton = ({invoice} : {invoice : Invoice}) => {
 						Delete
 					</button>
 
-					{alert ? (
+					{alert == true ? (
 						<div
 							role="alert"
 							className="alert absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 w-[450px]"
@@ -81,7 +88,7 @@ const DeleteButton = ({invoice} : {invoice : Invoice}) => {
 									d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 								></path>
 							</svg>
-							<span>Delete Invoice?</span>
+							<span>Are you sure?</span>
 							<div>
 								<button
 									className="btn btn-sm mr-3"
@@ -92,7 +99,7 @@ const DeleteButton = ({invoice} : {invoice : Invoice}) => {
 								<button
 									className="btn btn-sm btn-primary"
 									onClick={() => {
-										formDeleteSubmitState(true);
+										formSubmitState(true);
 									}}
 								>
 									Accept
@@ -105,4 +112,4 @@ const DeleteButton = ({invoice} : {invoice : Invoice}) => {
 		);
 }
 
-export default DeleteButton
+export default Button;

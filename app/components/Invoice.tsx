@@ -1,24 +1,11 @@
 import React, { useEffect } from "react";
-import Image from "next/image";
 import { FaCircle, FaPlus } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
-import SidebarContent from "./SidebarContent";
 import { prisma } from "@/prisma";
 import { Invoice } from "@/lib/types";
 import Link from "next/link";
-
-const getInvoices = async () => {
-	const invoices = await prisma.invoice.findMany({
-		orderBy: {
-			invoiceDate: "desc",
-		},
-		include: {
-			invoiceItems: true,
-		},
-	});
-
-	return invoices;
-}
+import AddInvoice from "./AddInvoice";
+import { getInvoices } from "@/lib/_actions";
 
 const InvoicePage = async () => {
 	const invoices = await getInvoices();
@@ -74,7 +61,7 @@ const InvoicePage = async () => {
 							></label>
 							<ul className="menu  w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
 								{/* Sidebar content here */}
-								<SidebarContent />
+								<AddInvoice />
 							</ul>
 						</span>
 					</span>

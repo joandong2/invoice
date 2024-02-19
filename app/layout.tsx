@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { League_Spartan } from "next/font/google";
-import { leagueSpartan, roboto } from "./utilities/font";
+import { leagueSpartan, roboto } from "../lib/font";
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +22,9 @@ export default function RootLayout({
 			<body
 				className={`${leagueSpartan.variable} ${roboto.variable} light h-[100%]`}
 			>
+				<Toaster position="top-right" />
 				<Sidebar />
-				<div className="h-full w-[95%] min-h-screen lg:w-3/4 xl:w-1/2 mx-auto pt-[40px] lg:pt-[60px]">
+				<div className="h-full w-[95%] min-h-screen lg:w-3/4 xl:w-1/2 mx-auto pt-[40px] lg:pt-[60px] lg:pb-[60px]">
 					<main>{children}</main>
 				</div>
 			</body>

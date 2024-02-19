@@ -3,29 +3,15 @@ import React from 'react'
 import { FaCircle } from 'react-icons/fa';
 import { format } from "date-fns";
 import { Item } from '@/lib/types';
-import SingleInvoiceButtons from '@/app/components/SingleInvoiceButtons';
 import DeleteButton from '@/app/components/DeleteButton';
+import Link from 'next/link';
+import PaidButton from '@/app/components/PaidButton';
+import { getInvoice } from '@/lib/_actions';
 
-const getInvoice = async (code: string) => {
-	try {
-		const invoice = await prisma.invoice.findFirst({
-			where: { invoiceCode: code },
-			include: {
-				invoiceItems: true,
-			},
-		});
-
-		return invoice
-	} catch (error) {
-		console.error(error);
-		throw error; // Re-throw the error to handle it in the component
-	}
-};
 
 const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 
 	const invoice = await getInvoice(params.invoiceCode.toUpperCase());
-	//console.log('component', invoice);
 
     return (
 			<>
@@ -43,6 +29,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 							</span>
 							{/* <SingleInvoiceButtons invoice={invoice} /> */}
 							<DeleteButton invoice={invoice} />
+							<PaidButton invoice={invoice} />
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">
@@ -145,7 +132,14 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 						</span>
 					</span>
 				) : (
-					"There is an error with this invoice!"
+					<>
+						<span>
+							"There is an error with this invoice!"{" "}
+							<Link href="/" className="text-red ml-4">
+								Homepage
+							</Link>
+						</span>
+					</>
 				)}
 			</>
 		);
