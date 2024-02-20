@@ -7,13 +7,14 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useInvoiceStore } from '@/lib/store/store';
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import EditInvoice from './EditInvoice';
 
 interface InvoiceCode {
 	invoiceCode: string
 }
 
 
-const Button = ({ invoiceCode }: { invoiceCode: string }) => {
+const Button = ({ invoice }: { invoice: Invoice }) => {
 	const alert = useInvoiceStore((state) => state.alert);
 	const toggleAlert = useInvoiceStore((state) => state.toggleAlert);
 	const alertState = useInvoiceStore((state) => state.alertState);
@@ -23,7 +24,7 @@ const Button = ({ invoiceCode }: { invoiceCode: string }) => {
 
 	const { register, handleSubmit } = useForm<InvoiceCode>({
 		defaultValues: {
-			invoiceCode: invoiceCode,
+			invoiceCode: invoice.invoiceCode,
 		},
 	});
 
@@ -64,27 +65,50 @@ const Button = ({ invoiceCode }: { invoiceCode: string }) => {
 					className="input input-bordered w-full"
 					{...register("invoiceCode")}
 				/>
-				<button
-					className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
-					onClick={() => {
-						setAlertState("delete");
-						toggleAlert(true);
-					}}
-				>
-					Delete
-				</button>
-				<button
-					className="btn text-[16px] text-[#fff] font-bold bg-[#7c5dfa] rounded-[25px] py-4 px-8 border-none"
-					onClick={() => {
-						setAlertState("paid");
-						toggleAlert(true);
-					}}
-				>
-					Mark As Paid
-				</button>
-
+				<span className="flex gap-4 justify-end">
+					<span className="drawer z-10 w-auto">
+						<input id="my-drawer" type="checkbox" className="drawer-toggle" />
+						<span className="drawer-content">
+							<label
+								htmlFor="my-drawer"
+								className="btn drawer-button text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] py-4 px-8 border-none"
+							>
+								Edit
+							</label>
+						</span>
+						<span className="drawer-side">
+							<label
+								htmlFor="my-drawer"
+								aria-label="close sidebar"
+								className="drawer-overlay"
+							></label>
+							<ul className="menu w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
+								{/* Sidebar content here */}
+								<EditInvoice invoice={invoice}/>
+							</ul>
+						</span>
+					</span>
+					<button
+						className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
+						onClick={() => {
+							setAlertState("delete");
+							toggleAlert(true);
+						}}
+					>
+						Delete
+					</button>
+					<button
+						className="btn text-[16px] text-[#fff] font-bold bg-[#7c5dfa] rounded-[25px] py-4 px-8 border-none"
+						onClick={() => {
+							setAlertState("paid");
+							toggleAlert(true);
+						}}
+					>
+						Mark As Paid
+					</button>
+				</span>
 				{alert == true ? (
-					<div
+					<span
 						role="alert"
 						className="alert absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 w-[450px]"
 					>
@@ -102,7 +126,7 @@ const Button = ({ invoiceCode }: { invoiceCode: string }) => {
 							></path>
 						</svg>
 						<span>Are you sure?</span>
-						<div>
+						<span>
 							<button
 								className="btn btn-sm mr-3"
 								onClick={() => toggleAlert(false)}
@@ -117,8 +141,8 @@ const Button = ({ invoiceCode }: { invoiceCode: string }) => {
 							>
 								Accept
 							</button>
-						</div>
-					</div>
+						</span>
+					</span>
 				) : null}
 			</form>
 		</>

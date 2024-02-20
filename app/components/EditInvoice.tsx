@@ -1,19 +1,26 @@
-'use client'
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { createInvoice } from "../../lib/_actions";
-import { useForm, SubmitHandler, useFieldArray, useWatch } from "react-hook-form";
+import {
+	useForm,
+	SubmitHandler,
+	useFieldArray,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
+import { Invoice } from "@/lib/types";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
-const AddInvoice = () => {
-	// used this state for the price and quantity real time update
-	const [itemsList, setItemsList] = useState<any>([]);;
+const EditInvoice = ({invoice} : {invoice : Invoice}) => {
+	const [itemsList, setItemsList] = useState<any>([]);
+	const [isMounted, setIsMounted] = useState(false);
+	const origDate = new Date(invoice.invoiceDate);
+	origDate.setDate(origDate.getDate() - 1);
 
 	const {
 		register,
@@ -41,6 +48,15 @@ const AddInvoice = () => {
 		return () => subscription.unsubscribe();
 	}, [watch]);
 
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	if (!isMounted) {
+		// Render a placeholder or loading state on the server side
+		return <div>Loading...</div>;
+	}
+
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await createInvoice(data);
 		console.log("result", result);
@@ -50,10 +66,10 @@ const AddInvoice = () => {
 		reset();
 	};
 
-	//console.log('itemsList', itemsList);
+	//console.log('invoice', invoice);
 
 	return (
-		<div className="h-full">
+		<span className="h-full">
 			<h1 className="font-bold mb-8">New Invoice</h1>
 
 			<form
@@ -63,7 +79,7 @@ const AddInvoice = () => {
 				<input
 					type="hidden"
 					{...register("invoiceCode")}
-					defaultValue={Math.random().toString(36).slice(2, 8).toUpperCase()}
+					defaultValue={invoice.invoiceCode}
 				/>
 				<h4 className="text-[#7c5dfa] font-bold mb-2">Bill From</h4>
 				<span className="form-control w-full">
@@ -73,6 +89,7 @@ const AddInvoice = () => {
 					<input
 						className="input input-bordered w-full"
 						{...register("billFromStreetAddress")}
+						defaultValue={invoice.billFromStreetAddress}
 					/>
 					{errors.billFromStreetAddress?.message && (
 						<p className="text-sm text-red-400 mt-2">
@@ -86,6 +103,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("billFromCity")}
+							defaultValue={invoice.billFromCity}
 						/>
 						{errors.billFromCity?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -100,6 +118,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("billFromPostcode")}
+							defaultValue={invoice.billFromPostcode}
 						/>
 						{errors.billFromPostcode?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -114,6 +133,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("billFromCountry")}
+							defaultValue={invoice.billFromCountry}
 						/>
 						{errors.billFromCountry?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -130,6 +150,7 @@ const AddInvoice = () => {
 					<input
 						className="input input-bordered w-full"
 						{...register("clientName")}
+						defaultValue={invoice.clientName}
 					/>
 					{errors.clientName?.message && (
 						<p className="text-sm text-red-400 mt-2">
@@ -145,6 +166,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("clientEmail")}
+							defaultValue={invoice.clientEmail}
 						/>
 						{errors.clientEmail?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -160,6 +182,7 @@ const AddInvoice = () => {
 					<input
 						className="input input-bordered w-full"
 						{...register("clientStreetAddress")}
+						defaultValue={invoice.clientStreetAddress}
 					/>
 					{errors.clientStreetAddress?.message && (
 						<p className="text-sm text-red-400 mt-2">
@@ -173,6 +196,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("clientCity")}
+							defaultValue={invoice.clientCity}
 						/>
 						{errors.clientCity?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -187,6 +211,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("clientPostCode")}
+							defaultValue={invoice.clientPostCode}
 						/>
 						{errors.clientPostCode?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -201,6 +226,7 @@ const AddInvoice = () => {
 						<input
 							className="input input-bordered w-full"
 							{...register("clientCountry")}
+							defaultValue={invoice.clientCountry}
 						/>
 						{errors.clientCountry?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -218,6 +244,7 @@ const AddInvoice = () => {
 							type="date"
 							className="input input-bordered w-full"
 							{...register("invoiceDate")}
+							defaultValue={origDate.toISOString().substring(0, 10)}
 						/>
 						{errors.invoiceDate?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -232,6 +259,7 @@ const AddInvoice = () => {
 						<select
 							className="select select-bordered w-full"
 							{...register("paymentTerms")}
+							//defaultValue={invoice.paymentTerms}
 						>
 							<option value="30days">Next 30 Days</option>
 							<option value="14days">Next 14 Days</option>
@@ -250,6 +278,7 @@ const AddInvoice = () => {
 					<textarea
 						className="textarea textarea-bordered h-24"
 						{...register("description")}
+						defaultValue={invoice.description}
 					></textarea>
 				</span>
 				<h4 className="text-[#7c5dfa] font-bold mb-4">Item List</h4>
@@ -269,6 +298,7 @@ const AddInvoice = () => {
 								<span className="col-span-4">
 									<input
 										key={field.id}
+										//defaultValue={field.itemName}
 										{...register(`itemLists.${index}.itemName`)}
 										className="input input-bordered w-full"
 									/>
@@ -276,6 +306,7 @@ const AddInvoice = () => {
 								<span className="col-span-2">
 									<input
 										key={field.id}
+										//defaultValue={field.qty}
 										{...register(`itemLists.${index}.qty`)}
 										type="text"
 										className="input input-bordered w-full"
@@ -284,6 +315,7 @@ const AddInvoice = () => {
 								<span className="col-span-2">
 									<input
 										type="number"
+										//defaultValue={field.price}
 										key={field.id}
 										{...register(`itemLists.${index}.price`)}
 										className="input input-bordered w-full"
@@ -323,27 +355,21 @@ const AddInvoice = () => {
 						Add New Item
 					</button>
 				</span>
-				<span className="md:grid md:grid-cols-2">
-					<span>
-						<button className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] border-none">
-							Discard
-						</button>
-					</span>
+				<span className="md:grid md:grid-cols-1">
 					<span className="flex gap-4 w-full justify-end">
 						<button
 							{...register("status")}
 							type="submit"
 							name="draft"
-							onClick={() => setValue("status", "draft")}
 							className="btn text-[16px] text-white font-bold bg-[#373b53] rounded-[25px] py-4 px-8 border-none"
 						>
-							Save as Draft
+							Cancel
 						</button>
 						<button
 							{...register("status")}
 							type="submit"
-							name="pending"
-							onClick={() => setValue("status", "pending")}
+							name="save"
+							onClick={() => setValue("status", invoice.status)}
 							className="btn text-[16px] text-[#fff] font-bold bg-[#7c5dfa] rounded-[25px] py-4 px-8 border-none"
 						>
 							Save & Send
@@ -351,8 +377,8 @@ const AddInvoice = () => {
 					</span>
 				</span>
 			</form>
-		</div>
+		</span>
 	);
 };
 
-export default AddInvoice;
+export default EditInvoice;

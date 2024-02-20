@@ -31,7 +31,7 @@ export const createInvoice = async (data: Inputs) => {
 				invoiceCode: data.invoiceCode as string,
 				description: data.description as string,
 				status: data.status as string,
-				amount: Number(data.itemLists.reduce((accum,item) => accum + item.price, 0)),
+				amount: Number(data.itemLists.reduce((accum,item) => accum + (item.price * item.qty), 0)),
 				invoiceDate: new Date(data.invoiceDate),
 				paymentTerms: data.paymentTerms as string,
 				billFromStreetAddress: data.billFromStreetAddress as string,

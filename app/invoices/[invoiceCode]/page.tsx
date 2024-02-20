@@ -16,7 +16,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 			<>
 				{invoice !== null ? (
 					<span>
-						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-2 justify-between py-[30px] px-[20px] mb-10">
+						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-2 justify-between py-[30px] px-[50px] mb-10">
 							<span className="flex align-middle items-center gap-4">
 								<span>Status</span>
 								<span
@@ -27,7 +27,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 								</span>
 							</span>
 							{/* <SingleInvoiceButtons invoice={invoice} /> */}
-							<Buttons invoiceCode={invoice.invoiceCode}/>
+							<Buttons invoice={invoice}/>
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">
