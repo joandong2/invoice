@@ -17,6 +17,7 @@ import { Invoice } from "@/lib/types";
 type FormValues = z.infer<typeof FormDataSchema>;
 
 const EditInvoice = ({invoice} : {invoice : Invoice}) => {
+	console.log(invoice);
 	const [itemsList, setItemsList] = useState<any>([]);
 	const [isMounted, setIsMounted] = useState(false);
 	const origDate = new Date(invoice.invoiceDate);
@@ -32,6 +33,9 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 		formState: { errors },
 	} = useForm<FormValues>({
 		resolver: zodResolver(FormDataSchema),
+		defaultValues: {
+			itemLists: invoice.invoiceItems || [{ itemName: "", qty: 0, price: 0 }], // Provide default values for the itemLists field array
+		},
 	});
 
 	const { fields, append, prepend, remove, update, swap, move, insert } =
@@ -298,7 +302,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 								<span className="col-span-4">
 									<input
 										key={field.id}
-										//defaultValue={field.itemName}
+										defaultValue={field.itemName}
 										{...register(`itemLists.${index}.itemName`)}
 										className="input input-bordered w-full"
 									/>
@@ -306,7 +310,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 								<span className="col-span-2">
 									<input
 										key={field.id}
-										//defaultValue={field.qty}
+										defaultValue={field.itemQuantity}
 										{...register(`itemLists.${index}.qty`)}
 										type="text"
 										className="input input-bordered w-full"
@@ -315,7 +319,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 								<span className="col-span-2">
 									<input
 										type="number"
-										//defaultValue={field.price}
+										defaultValue={field.itemPrice}
 										key={field.id}
 										{...register(`itemLists.${index}.price`)}
 										className="input input-bordered w-full"
