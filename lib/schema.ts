@@ -13,28 +13,30 @@ export const FormDataSchema = z.object({
 	clientPostCode: z.string().nonempty("Field is required."),
 	clientCountry: z.string().nonempty("Field is required."),
 	invoiceCode: z.coerce.string(),
-	invoiceDate: z.coerce.date(),
 	paymentTerms: z.string(),
+	invoiceDate: z.coerce.date(),
 	description: z.string(),
-	itemLists: z.array(
-		z.object({
-			itemName: z.string().nonempty("Field is required."),
-			qty: z.coerce
-				.number({
-					required_error: "Field is required",
-					invalid_type_error: "Field must be a number",
-				})
-				.int()
-				.positive()
-				.min(1, { message: "Field should be at least 1" }),
-			price: z.coerce
-				.number({
-					required_error: "Field is required",
-					invalid_type_error: "Field must be a number",
-				})
-				.int()
-				.positive()
-				.min(1, { message: "Field should be at least 1" }),
-		})
-	).nonempty("Items area required."),
+	itemLists: z
+		.array(
+			z.object({
+				itemName: z.string().nonempty("Field is required."),
+				itemQuantity: z.coerce
+					.number({
+						required_error: "Field is required",
+						invalid_type_error: "Field must be a number",
+					})
+					.int()
+					.positive()
+					.min(1, { message: "Field should be at least 1" }),
+				itemPrice: z.coerce
+					.number({
+						required_error: "Field is required",
+						invalid_type_error: "Field must be a number",
+					})
+					.int()
+					.positive()
+					.min(1, { message: "Field should be at least 1" }),
+			})
+		)
+		.nonempty("Items area required."),
 });

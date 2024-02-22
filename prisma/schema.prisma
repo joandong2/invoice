@@ -16,8 +16,9 @@ model Invoice {
   description String
   status String
   amount Float
-  invoiceDate DateTime
   paymentTerms String
+  invoiceDate DateTime
+  dueDate DateTime
   createdAt DateTime @default(now())
   udpatedAt DateTime @updatedAt
   billFromStreetAddress String

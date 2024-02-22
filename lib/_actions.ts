@@ -4,8 +4,7 @@ import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
-import { Invoice } from "@prisma/client";
-import { useInvoiceStore } from "./store/store";
+import { addDays } from "date-fns";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -14,26 +13,36 @@ export const createInvoice = async (data: Inputs) => {
 	if(data.itemLists.length < 0) {
 		return { success: false, error: 'Item count must be greater than 0!' }
 	} else {
-		///insert to database each items
+		// insert to database each items
 		for (let i = 0; i < Number(data.itemLists.length); i++) {
 			await prisma.invoiceItem.create({
 				data: {
 					invoiceID: data.invoiceCode as string,
 					itemName: data.itemLists[i].itemName as string,
-					itemQuantity: Number(data.itemLists[i].qty),
-					itemPrice: Number(data.itemLists[i].price),
+					itemQuantity: Number(data.itemLists[i].itemQuantity),
+					itemPrice: Number(data.itemLists[i].itemPrice),
 				},
 			});
 		}
+
+		const origDate = new Date(data.invoiceDate);
+		const dueDate = addDays(origDate, Number(data.paymentTerms));
+
 
 		const newInvoice = await prisma.invoice.create({
 			data: {
 				invoiceCode: data.invoiceCode as string,
 				description: data.description as string,
 				status: data.status as string,
-				amount: Number(data.itemLists.reduce((accum,item) => accum + (item.price * item.qty), 0)),
-				invoiceDate: new Date(data.invoiceDate),
+				amount: Number(
+					data.itemLists.reduce(
+						(accum, item) => accum + item.itemPrice * item.itemQuantity,
+						0
+					)
+				),
 				paymentTerms: data.paymentTerms as string,
+				invoiceDate: origDate,
+				dueDate: dueDate,
 				billFromStreetAddress: data.billFromStreetAddress as string,
 				billFromCity: data.billFromCity as string,
 				billFromPostcode: data.billFromPostcode as string,
@@ -55,6 +64,60 @@ export const createInvoice = async (data: Inputs) => {
 		}
 	}
 };
+
+export const editInvoice = async (data: Inputs) => {
+	console.log(data)
+	// if (data.itemLists.length < 0) {
+	// 	return { success: false, error: "Item count must be greater than 0!" };
+	// } else {
+	// 	///insert to database each items
+	// 	for (let i = 0; i < Number(data.itemLists.length); i++) {
+	// 		await prisma.invoiceItem.create({
+	// 			data: {
+	// 				invoiceID: data.invoiceCode as string,
+	// 				itemName: data.itemLists[i].itemName as string,
+	// 				itemQuantity: Number(data.itemLists[i].itemQuantity),
+	// 				itemPrice: Number(data.itemLists[i].itemPrice),
+	// 			},
+	// 		});
+	// 	}
+
+	// 	const newInvoice = await prisma.invoice.create({
+	// 		data: {
+	// 			invoiceCode: data.invoiceCode as string,
+	// 			description: data.description as string,
+	// 			status: data.status as string,
+	// 			amount: Number(
+	// 				data.itemLists.reduce(
+	// 					(accum, item) => accum + item.itemPrice * item.itemQuantity,
+	// 					0
+	// 				)
+	// 			),
+	// 			paymentTerms: data.paymentTerms as string,
+	// 			invoiceDate: new Date(data.invoiceDate),
+	// 			//dueDate: new Date(data.invoiceDate),
+	// 			billFromStreetAddress: data.billFromStreetAddress as string,
+	// 			billFromCity: data.billFromCity as string,
+	// 			billFromPostcode: data.billFromPostcode as string,
+	// 			billFromCountry: data.billFromCountry as string,
+	// 			clientEmail: data.clientEmail as string,
+	// 			clientName: data.clientName as string,
+	// 			clientStreetAddress: data.clientStreetAddress as string,
+	// 			clientCity: data.clientCity as string,
+	// 			clientPostCode: data.clientPostCode as string,
+	// 			clientCountry: data.clientCountry as string,
+	// 		},
+	// 	});
+
+	// 	if (newInvoice) {
+	// 		revalidatePath("/");
+	// 		return {
+	// 			status: "success",
+	// 		};
+	// 	}
+	// }
+};
+
 
 export const paidInvoice = async (data: string) => {
 	await prisma.invoice.update({
@@ -98,6 +161,8 @@ export const deleteInvoice = async (data : string) => {
 			invoiceCode: data,
 		},
 	});
+
+	revalidatePath("/");
 
 	return {
 		status: "success",

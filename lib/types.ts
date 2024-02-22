@@ -6,14 +6,16 @@ export interface Item {
 }
 
 export interface Invoice {
+	invoiceItems?: Item[];
 	invoiceCode: string;
 	description: string;
 	status: string;
 	amount: number;
-	invoiceDate: Date;
 	paymentTerms: string;
+	invoiceDate: Date;
+	dueDate: Date;
 	createdAt: Date;
-	udpatedAt: Date ;
+	udpatedAt: Date;
 	billFromStreetAddress: string;
 	billFromCity: string;
 	billFromPostcode: string;

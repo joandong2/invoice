@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { FaCircle, FaPlus } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
-import { prisma } from "@/prisma";
+import Image from "next/image";
 import { Invoice } from "@/lib/types";
 import Link from "next/link";
 import AddInvoice from "./AddInvoice";
@@ -18,7 +18,9 @@ const InvoicePage = async () => {
 					<span>
 						<h1 className="font-bold">Invoices</h1>
 						<p>
-							There are {invoices.length ? invoices.length : 0} total invoices
+							{invoices.length > 0
+								? `There are ${invoices.length} total invoices`
+								: "No invoices."}
 						</p>
 					</span>
 				</div>
@@ -69,45 +71,57 @@ const InvoicePage = async () => {
 				</span>
 			</span>
 			<span>
-				{invoices.length > 0
-					? invoices.map((invoice: Invoice) => (
-							<span className="invoices" key={invoice.invoiceCode}>
-								<span className="hidden md:flex w-full justify-evenly items-center gap-15">
-									<span className="font-bold flex-1 text-[22px]">
-										#
-										<span className="text-[#0c0e16]">
-											{invoice.invoiceCode}
-										</span>
-									</span>
-									<span className="date flex-1 text-[#888eb0]  font-medium">
-										{format(invoice.invoiceDate, "dd LLL yyyy")}
-									</span>
-									<span className="font-medium flex-1 text-[#888eb0] mr-[40px]">
-										{invoice.clientName}
-									</span>
-									<span></span>
-									<span className="font-bold flex-1 text-[22px] text-[#0c0e16]">{`
+				{invoices.length > 0 ? (
+					invoices.map((invoice: Invoice) => (
+						<span className="invoices" key={invoice.invoiceCode}>
+							<span className="hidden md:flex w-full justify-evenly items-center gap-15">
+								<span className="font-bold flex-1 text-[22px]">
+									#<span className="text-[#0c0e16]">{invoice.invoiceCode}</span>
+								</span>
+								<span className="date flex-1 text-[#888eb0]  font-medium">
+									{format(invoice.invoiceDate, "dd LLL yyyy")}
+								</span>
+								<span className="font-medium flex-1 text-[#888eb0] mr-[40px]">
+									{invoice.clientName}
+								</span>
+								<span></span>
+								<span className="font-bold flex-1 text-[22px] text-[#0c0e16]">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",
 								})}`}</span>
-									<span className={`flex-1`}>
-										<span className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}>
-											<FaCircle className="text-[9px]" />{" "}
-											<span className="capitalize">{invoice.status}</span>
-										</span>
-									</span>
-									<span className="">
-										<Link
-											href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
-										>
-											<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
-										</Link>
+								<span className={`flex-1`}>
+									<span
+										className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
+									>
+										<FaCircle className="text-[9px]" />{" "}
+										<span className="capitalize">{invoice.status}</span>
 									</span>
 								</span>
+								<span className="">
+									<Link href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}>
+										<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
+									</Link>
+								</span>
 							</span>
-					  ))
-					: "No invoices.."}
+						</span>
+					))
+				) : (
+					<span className="flex flex-col align-middle text-center items-center">
+						<Image
+							src="/assets/illustration-empty.svg"
+							width="500"
+							height="500"
+							alt="Image Best Gear"
+							className="mb-10"
+						/>
+						<h1>There is nothing here</h1>
+						<p>
+							Create an invoice by clicking{" "}
+							<span className="bold">New Invoice</span> button and get started
+						</p>
+					</span>
+				)}
 			</span>
 		</>
 	);

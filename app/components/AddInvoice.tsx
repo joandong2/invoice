@@ -13,7 +13,7 @@ type FormValues = z.infer<typeof FormDataSchema>;
 
 const AddInvoice = () => {
 	// used this state for the price and quantity real time update
-	const [itemsList, setItemsList] = useState<any>([]);;
+	const [itemsList, setItemsList] = useState<any>([]);
 
 	const {
 		register,
@@ -43,14 +43,12 @@ const AddInvoice = () => {
 
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await createInvoice(data);
-		console.log("result", result);
+		// console.log("result", result);
 		if (result?.status == "success") {
 			toast.success("Invoice Created", {});
 		}
 		reset();
 	};
-
-	//console.log('itemsList', itemsList);
 
 	return (
 		<div className="h-full">
@@ -233,8 +231,10 @@ const AddInvoice = () => {
 							className="select select-bordered w-full"
 							{...register("paymentTerms")}
 						>
-							<option value="30days">Next 30 Days</option>
-							<option value="14days">Next 14 Days</option>
+							<option value="7">Next 7 Days</option>
+							<option value="14">Next 14 Days</option>
+							<option value="30">Next 30 Days</option>
+							<option value="60">Next 60 Days</option>
 						</select>
 						{errors.paymentTerms?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -276,7 +276,7 @@ const AddInvoice = () => {
 								<span className="col-span-2">
 									<input
 										key={field.id}
-										{...register(`itemLists.${index}.qty`)}
+										{...register(`itemLists.${index}.itemQuantity`)}
 										type="text"
 										className="input input-bordered w-full"
 									/>
@@ -285,15 +285,15 @@ const AddInvoice = () => {
 									<input
 										type="number"
 										key={field.id}
-										{...register(`itemLists.${index}.price`)}
+										{...register(`itemLists.${index}.itemPrice`)}
 										className="input input-bordered w-full"
 									/>
 								</span>
 								<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
 									{itemsList.itemLists && itemsList.itemLists.length > index
 										? (
-												Number(itemsList.itemLists[index].price) *
-												Number(itemsList.itemLists[index].qty)
+												Number(itemsList.itemLists[index].itemPrice) *
+												Number(itemsList.itemLists[index].itemQuantity)
 										  ).toLocaleString("en-US", {
 												style: "currency",
 												currency: "USD",
@@ -315,8 +315,8 @@ const AddInvoice = () => {
 						onClick={() =>
 							append({
 								itemName: "",
-								qty: 0,
-								price: 0,
+								itemQuantity: 0,
+								itemPrice: 0,
 							})
 						}
 					>

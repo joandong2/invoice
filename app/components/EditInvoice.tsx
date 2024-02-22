@@ -34,7 +34,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 	} = useForm<FormValues>({
 		resolver: zodResolver(FormDataSchema),
 		defaultValues: {
-			itemLists: invoice.invoiceItems || [{ itemName: "", qty: 0, price: 0 }], // Provide default values for the itemLists field array
+			itemLists: invoice.invoiceItems || [{ itemName: "", itemQuantity: 0, itemPrice: 0 }], // Provide default values for the itemLists field array
 		},
 	});
 
@@ -64,13 +64,11 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await createInvoice(data);
 		console.log("result", result);
-		if (result?.status == "success") {
-			toast.success("Invoice Created", {});
-		}
-		reset();
+		// if (result?.status == "success") {
+		// 	toast.success("Invoice Updated", {});
+		// }
+		// reset();
 	};
-
-	//console.log('invoice', invoice);
 
 	return (
 		<span className="h-full">
@@ -311,7 +309,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 									<input
 										key={field.id}
 										defaultValue={field.itemQuantity}
-										{...register(`itemLists.${index}.qty`)}
+										{...register(`itemLists.${index}.itemQuantity`)}
 										type="text"
 										className="input input-bordered w-full"
 									/>
@@ -321,11 +319,18 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 										type="number"
 										defaultValue={field.itemPrice}
 										key={field.id}
-										{...register(`itemLists.${index}.price`)}
+										{...register(`itemLists.${index}.itemPrice`)}
 										className="input input-bordered w-full"
 									/>
 								</span>
 								<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
+									{(field.itemQuantity * field.itemPrice).toLocaleString(
+										"en-US",
+										{
+											style: "currency",
+											currency: "USD",
+										}
+									)}
 									{itemsList.itemLists && itemsList.itemLists.length > index
 										? (
 												Number(itemsList.itemLists[index].price) *
@@ -351,8 +356,8 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 						onClick={() =>
 							append({
 								itemName: "",
-								qty: 0,
-								price: 0,
+								itemQuantity: 0,
+								itemPrice: 0,
 							})
 						}
 					>

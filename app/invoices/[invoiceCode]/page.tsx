@@ -57,7 +57,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 									<span>
 										<p className="mb-3 text-[15px]">Payment Due</p>
 										<span className="text-black font-bold text-[20px]">{`${format(
-											invoice.invoiceDate,
+											invoice.dueDate,
 											"dd LLL yyyy"
 										)}`}</span>
 									</span>
