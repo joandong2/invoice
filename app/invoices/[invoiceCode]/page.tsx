@@ -26,8 +26,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 									<span className="capitalize">{invoice.status}</span>
 								</span>
 							</span>
-							{/* <SingleInvoiceButtons invoice={invoice} /> */}
-							<Buttons invoice={invoice}/>
+							<Buttons invoice={invoice} />
 						</span>
 						<span className="bg-[#fff] rounded-[15px] grid md:grid-cols-1 justify-between py-[30px] px-[50px]">
 							<span className="flex align-middle justify-between w-full items-center gap-4 mb-8">
@@ -89,8 +88,8 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 										<span className="table-cell text-right">Total</span>
 									</span>
 									{invoice.invoiceItems.length > 0
-										? invoice.invoiceItems.map((item: Item) => (
-												<span className="table-row" key={item.invoiceID}>
+										? invoice.invoiceItems.map((item: Item, index) => (
+												<span className="table-row" key={index}>
 													<span className="table-cell text-black font-bold text-[16px]">
 														{item.itemName}
 													</span>

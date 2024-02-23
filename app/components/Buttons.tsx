@@ -13,7 +13,6 @@ interface InvoiceCode {
 	invoiceCode: string
 }
 
-
 const Button = ({ invoice }: { invoice: Invoice }) => {
 	const alert = useInvoiceStore((state) => state.alert);
 	const toggleAlert = useInvoiceStore((state) => state.toggleAlert);
@@ -29,8 +28,6 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 	});
 
 	const processForm: SubmitHandler<InvoiceCode> = async (data) => {
-		//console.log(invoiceCode);
-		//console.log(alertState);
 		if (formSubmit) {
 			console.log(alertState)
 			if(alertState == 'delete') {
@@ -55,7 +52,29 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 	};
 
 	return (
-		<>
+		<span className="flex">
+			<span className="drawer z-10 w-auto">
+				<input id="my-drawer" type="checkbox" className="drawer-toggle" />
+				<span className="drawer-content">
+					<label
+						htmlFor="my-drawer"
+						className="btn drawer-button text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] py-4 px-8 border-none"
+					>
+						Edit
+					</label>
+				</span>
+				<span className="drawer-side">
+					<label
+						htmlFor="my-drawer"
+						aria-label="close sidebar"
+						className="drawer-overlay"
+					></label>
+					<ul className="menu w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
+						{/* Sidebar content here */}
+						<EditInvoice invoice={invoice} />
+					</ul>
+				</span>
+			</span>
 			<form
 				onSubmit={handleSubmit(processForm)}
 				className="flex flex-1 flex-col gap-4"
@@ -66,28 +85,6 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 					{...register("invoiceCode")}
 				/>
 				<span className="flex gap-4 justify-end">
-					<span className="drawer z-10 w-auto">
-						<input id="my-drawer" type="checkbox" className="drawer-toggle" />
-						<span className="drawer-content">
-							<label
-								htmlFor="my-drawer"
-								className="btn drawer-button text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] py-4 px-8 border-none"
-							>
-								Edit
-							</label>
-						</span>
-						<span className="drawer-side">
-							<label
-								htmlFor="my-drawer"
-								aria-label="close sidebar"
-								className="drawer-overlay"
-							></label>
-							<ul className="menu w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
-								{/* Sidebar content here */}
-								<EditInvoice invoice={invoice}/>
-							</ul>
-						</span>
-					</span>
 					<button
 						className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
 						onClick={() => {
@@ -145,7 +142,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 					</span>
 				) : null}
 			</form>
-		</>
+		</span>
 	);
 };
 

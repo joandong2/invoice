@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { createInvoice } from "../../lib/_actions";
+import { createInvoice, editInvoice } from "../../lib/_actions";
 import {
 	useForm,
 	SubmitHandler,
@@ -17,7 +17,6 @@ import { Invoice } from "@/lib/types";
 type FormValues = z.infer<typeof FormDataSchema>;
 
 const EditInvoice = ({invoice} : {invoice : Invoice}) => {
-	console.log(invoice);
 	const [itemsList, setItemsList] = useState<any>([]);
 	const [isMounted, setIsMounted] = useState(false);
 	const origDate = new Date(invoice.invoiceDate);
@@ -27,7 +26,6 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 		register,
 		handleSubmit,
 		watch,
-		setValue,
 		reset,
 		control,
 		formState: { errors },
@@ -47,6 +45,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 	// watch all value
 	useEffect(() => {
 		const subscription = watch((value) => {
+			console.log(value)
 			setItemsList(value);
 		});
 		return () => subscription.unsubscribe();
@@ -62,13 +61,15 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 	}
 
 	const processForm: SubmitHandler<FormValues> = async (data) => {
-		const result = await createInvoice(data);
-		console.log("result", result);
+		//console.log(data)
+		const result = await editInvoice(data);
+		//console.log("result", result);
 		// if (result?.status == "success") {
 		// 	toast.success("Invoice Updated", {});
 		// }
 		// reset();
 	};
+
 
 	return (
 		<span className="h-full">
@@ -263,8 +264,10 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 							{...register("paymentTerms")}
 							//defaultValue={invoice.paymentTerms}
 						>
-							<option value="30days">Next 30 Days</option>
-							<option value="14days">Next 14 Days</option>
+							<option value="7">Next 7 Days</option>
+							<option value="14">Next 14 Days</option>
+							<option value="30">Next 30 Days</option>
+							<option value="60">Next 60 Days</option>
 						</select>
 						{errors.paymentTerms?.message && (
 							<p className="text-sm text-red-400 mt-2">
@@ -324,22 +327,23 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 									/>
 								</span>
 								<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
-									{(field.itemQuantity * field.itemPrice).toLocaleString(
-										"en-US",
-										{
-											style: "currency",
-											currency: "USD",
-										}
-									)}
-									{itemsList.itemLists && itemsList.itemLists.length > index
+									{itemsList?.itemLists && itemsList.itemLists.length > 0
 										? (
-												Number(itemsList.itemLists[index].price) *
-												Number(itemsList.itemLists[index].qty)
+												Number(itemsList.itemLists[index]?.itemPrice) *
+												Number(itemsList.itemLists[index]?.itemQuantity)
 										  ).toLocaleString("en-US", {
 												style: "currency",
 												currency: "USD",
 										  })
-										: 0}
+										: invoice.invoiceItems
+										? (
+												invoice.invoiceItems[index].itemPrice *
+												invoice.invoiceItems[index].itemQuantity
+										  ).toLocaleString("en-US", {
+												style: "currency",
+												currency: "USD",
+										  })
+										: null}
 								</span>
 								<span
 									onClick={() => remove(index)}
@@ -367,7 +371,6 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 				<span className="md:grid md:grid-cols-1">
 					<span className="flex gap-4 w-full justify-end">
 						<button
-							{...register("status")}
 							type="submit"
 							name="draft"
 							className="btn text-[16px] text-white font-bold bg-[#373b53] rounded-[25px] py-4 px-8 border-none"
@@ -375,10 +378,8 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 							Cancel
 						</button>
 						<button
-							{...register("status")}
 							type="submit"
 							name="save"
-							onClick={() => setValue("status", invoice.status)}
 							className="btn text-[16px] text-[#fff] font-bold bg-[#7c5dfa] rounded-[25px] py-4 px-8 border-none"
 						>
 							Save & Send

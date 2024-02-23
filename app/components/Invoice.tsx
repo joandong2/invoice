@@ -72,8 +72,8 @@ const InvoicePage = async () => {
 			</span>
 			<span>
 				{invoices.length > 0 ? (
-					invoices.map((invoice: Invoice) => (
-						<span className="invoices" key={invoice.invoiceCode}>
+					invoices.map((invoice: Invoice, index) => (
+						<span className="invoices" key={index}>
 							<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 								<span className="font-bold flex-1 text-[22px]">
 									#<span className="text-[#0c0e16]">{invoice.invoiceCode}</span>

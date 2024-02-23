@@ -41,7 +41,7 @@ const AddInvoice = () => {
 		return () => subscription.unsubscribe();
 	}, [watch]);
 
-	const processForm: SubmitHandler<FormValues> = async (data) => {
+	const processEditForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await createInvoice(data);
 		// console.log("result", result);
 		if (result?.status == "success") {
@@ -55,7 +55,7 @@ const AddInvoice = () => {
 			<h1 className="font-bold mb-8">New Invoice</h1>
 
 			<form
-				onSubmit={handleSubmit(processForm)}
+				onSubmit={handleSubmit(processEditForm)}
 				className="flex flex-1 flex-col gap-4"
 			>
 				<input
