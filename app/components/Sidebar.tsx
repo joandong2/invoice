@@ -1,16 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useInvoiceStore } from "@/lib/store/store";
 
 const Sidebar = () => {
+	const theme = useInvoiceStore((state) => state.theme)
+	const setTheme = useInvoiceStore((state) => state.setTheme);
 
 	const handleOnclick = () => {
-		// useInvoiceStore.setState({
-		// 	theme: useInvoiceStore.getState().theme === "dark" ? "light" : "dark",
-		// });
+		setTheme(theme == 'light' ? 'dark' : 'light')
 	};
+
+	 useEffect(() => {
+		if (theme === 'dark') {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
+	}, [theme]);
 
 	return (
 		<div className="w-full h-[100%] lg:w-[100px] sidebar text-center z-50">
@@ -28,9 +37,9 @@ const Sidebar = () => {
 				</span>
 				<span className="flex lg:flex-col gap-3 justify-center items-center">
 					<span className="p-4 cursor-pointer" onClick={handleOnclick}>
-						{/* <Image
+						<Image
 							src={`${
-								currTheme === "light"
+								theme === "light"
 									? "/assets/icon-moon.svg"
 									: "/assets/icon-sun.svg"
 							}`}
@@ -38,7 +47,7 @@ const Sidebar = () => {
 							height="20"
 							alt="Image Best Gear"
 							className="rounded"
-						/> */}
+						/>
 					</span>
 					<span className="lg:block hidden w-full h-[1px] bg-[#494e6e]"></span>
 					<span className="lg:hidden block w-[1px] h-full bg-[#494e6e]"></span>

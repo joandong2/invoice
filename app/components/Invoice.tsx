@@ -18,7 +18,7 @@ const InvoicePage = async () => {
 					<span>
 						<h1 className="font-bold">Invoices</h1>
 						<p>
-							{invoices.length > 0
+							{invoices != undefined
 								? `There are ${invoices.length} total invoices`
 								: "No invoices."}
 						</p>

@@ -52,7 +52,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 	};
 
 	return (
-		<span className="flex">
+		<span className="flex justify-end">
 			<span className="drawer z-10 w-auto">
 				<input id="my-drawer" type="checkbox" className="drawer-toggle" />
 				<span className="drawer-content">
@@ -77,14 +77,14 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 			</span>
 			<form
 				onSubmit={handleSubmit(processForm)}
-				className="flex flex-1 flex-col gap-4"
+				className="flex flex-1 flex-col"
 			>
 				<input
 					type="hidden"
 					className="input input-bordered w-full"
 					{...register("invoiceCode")}
 				/>
-				<span className="flex gap-4 justify-end">
+				<span className="flex">
 					<button
 						className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
 						onClick={() => {

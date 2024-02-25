@@ -6,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
+//.getState() will only retrieve the initial state and will not reactively update when the state changes
 
 export const metadata: Metadata = {
 	title: "Create Next App",

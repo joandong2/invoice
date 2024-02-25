@@ -24,12 +24,12 @@ h2 {
 	font-weight: bold;
 }
 
-.light {
+body {
 	background-color: #f8f8fb;
 	color: #858BB2;
 }
 
-.dark {
+.dark body {
 	background-color: #141625;
 	color: #fff;
 }
