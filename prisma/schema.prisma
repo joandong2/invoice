@@ -31,7 +31,6 @@ model Invoice {
   clientCity String
   clientPostCode String
   clientCountry String
-
   invoiceItems InvoiceItem[]
 }
 
@@ -44,4 +43,6 @@ model InvoiceItem {
 
   invoiceID String
   invoice Invoice @relation(fields: [invoiceID], references:[invoiceCode])
+
+  @@unique([invoiceID, itemName], name: "invoiceID_ItemName")
 }

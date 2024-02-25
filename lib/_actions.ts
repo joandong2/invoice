@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { addDays } from "date-fns";
+import ObjectId from "bson-objectid";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -66,31 +67,46 @@ export const createInvoice = async (data: Inputs) => {
 
 export const editInvoice = async (data: Inputs) => {
 
-	//console.log('edit action', data);
-
 	try {
-		// Assuming you have a unique identifier for the invoice, let's call it 'invoiceID'
-		const invoiceId = data.invoiceCode as string;
-
-		// 1. Update invoice items
+		// Update invoice items
 		for (let i = 0; i < Number(data.itemLists.length); i++) {
-
-			const itemData = {
-				itemName: data.itemLists[i].itemName as string,
-				itemQuantity: Number(data.itemLists[i].itemQuantity),
-				itemPrice: Number(data.itemLists[i].itemPrice),
-			};
-
-			// Assuming you have a unique identifier for the item, let's call it 'itemID'
-			const itemID = /* Retrieve item ID based on your data structure or database */;
-
-			// Use an update operation for existing items, or create a new one if necessary
+			//const updatedItem = data.itemLists[i];
 			await prisma.invoiceItem.upsert({
-				where: { id: itemID },
-				update: itemData,
-				create: {  data.invoiceCode, ...itemData },
+				where: {
+					invoiceID_ItemName: {
+						invoiceID: data.invoiceCode as string,
+						itemName: data.itemLists[i].itemName as string,
+					},
+				},
+				update: {
+					itemName: data.itemLists[i].itemName as string,
+					itemQuantity: Number(data.itemLists[i].itemQuantity),
+					itemPrice: Number(data.itemLists[i].itemPrice),
+				},
+				create: {
+					invoiceID: data.invoiceCode as string,
+					itemName: data.itemLists[i].itemName as string,
+					itemQuantity: Number(data.itemLists[i].itemQuantity),
+					itemPrice: Number(data.itemLists[i].itemPrice),
+				},
 			});
 		}
+
+		await prisma.invoiceItem.deleteMany({
+			where: {
+				AND: [
+					{ invoiceID: data.invoiceCode as string },
+					{
+						// exclude items with the same 'itemName' as any item in the itemLists
+						NOT: {
+							itemName: {
+								in: data.itemLists.map((item) => item.itemName),
+							},
+						},
+					},
+				],
+			},
+		});
 
 		// 2. Update the main invoice details
 		const origDate = new Date(data.invoiceDate);
@@ -102,8 +118,8 @@ export const editInvoice = async (data: Inputs) => {
 			status: data.status as string,
 			amount: Number(
 				data.itemLists.reduce(
-				(accum, item) => accum + item.itemPrice * item.itemQuantity,
-				0
+					(accum, item) => accum + item.itemPrice * item.itemQuantity,
+					0
 				)
 			),
 			paymentTerms: data.paymentTerms as string,
@@ -121,21 +137,39 @@ export const editInvoice = async (data: Inputs) => {
 			clientCountry: data.clientCountry as string,
 		};
 
-		// Assuming you have a unique identifier for the invoice, let's call it 'invoiceID'
-		const invoiceID = data.invoiceCode as string;
-
 		// Use an update operation for existing invoices, or create a new one if necessary
-		await prisma.invoice.upsert({
-		where: { id: invoiceID },
-		update: invoiceData,
-		create: { id: invoiceID, ...invoiceData },
+		await prisma.invoice.update({
+			where: { invoiceCode: data.invoiceCode as string },
+			data: {
+				//invoiceCode: data.invoiceCode as string,
+				description: data.description as string,
+				status: data.status as string,
+				amount: Number(
+					data.itemLists.reduce(
+						(accum, item) => accum + item.itemPrice * item.itemQuantity,
+						0
+					)
+				),
+				paymentTerms: data.paymentTerms as string,
+				invoiceDate: origDate,
+				dueDate: dueDate,
+				billFromStreetAddress: data.billFromStreetAddress as string,
+				billFromCity: data.billFromCity as string,
+				billFromPostcode: data.billFromPostcode as string,
+				billFromCountry: data.billFromCountry as string,
+				clientEmail: data.clientEmail as string,
+				clientName: data.clientName as string,
+				clientStreetAddress: data.clientStreetAddress as string,
+				clientCity: data.clientCity as string,
+				clientPostCode: data.clientPostCode as string,
+				clientCountry: data.clientCountry as string,
+			},
 		});
 
 		// Assuming you have a function called 'revalidatePath' to trigger revalidation
 		revalidatePath("/");
-
 		return {
-		status: "success",
+			status: "success",
 		};
 	} catch (error) {
 		console.error('Error editing invoice:', error);

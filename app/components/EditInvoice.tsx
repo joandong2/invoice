@@ -36,17 +36,20 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 		},
 	});
 
-	const { fields, append, prepend, remove, update, swap, move, insert } =
+	const { fields, append, remove } =
 		useFieldArray({
 			control, // control props comes from useForm (optional: if you are using FormContext)
 			name: "itemLists", // unique name for your Field Array
 		});
 
+
 	// watch all value
 	useEffect(() => {
+		setItemsList(invoice)
+
 		const subscription = watch((value) => {
-			console.log(value)
 			setItemsList(value);
+			//console.log(value);
 		});
 		return () => subscription.unsubscribe();
 	}, [watch]);
@@ -61,15 +64,14 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 	}
 
 	const processForm: SubmitHandler<FormValues> = async (data) => {
-		//console.log(data)
+		// console.log(data);
 		const result = await editInvoice(data);
-		//console.log("result", result);
+		console.log("result", result);
 		// if (result?.status == "success") {
 		// 	toast.success("Invoice Updated", {});
 		// }
 		// reset();
 	};
-
 
 	return (
 		<span className="h-full">
@@ -83,6 +85,11 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 					type="hidden"
 					{...register("invoiceCode")}
 					defaultValue={invoice.invoiceCode}
+				/>
+				<input
+					type="hidden"
+					{...register("status")}
+					defaultValue={invoice.status}
 				/>
 				<h4 className="text-[#7c5dfa] font-bold mb-2">Bill From</h4>
 				<span className="form-control w-full">
@@ -335,15 +342,13 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 												style: "currency",
 												currency: "USD",
 										  })
-										: invoice.invoiceItems
-										? (
-												invoice.invoiceItems[index].itemPrice *
-												invoice.invoiceItems[index].itemQuantity
+										: (
+												Number(itemsList.invoiceItems[index]?.itemPrice) *
+												Number(itemsList.invoiceItems[index]?.itemQuantity)
 										  ).toLocaleString("en-US", {
 												style: "currency",
 												currency: "USD",
-										  })
-										: null}
+										  })}
 								</span>
 								<span
 									onClick={() => remove(index)}
