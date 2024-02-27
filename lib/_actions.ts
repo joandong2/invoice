@@ -257,7 +257,7 @@ export const deleteInvoice = async (data : string) => {
 
 }
 
-export const getInvoices = async () => {
+export const getInvoices = async ( status?: string ) => {
 	const invoices = await prisma.invoice.findMany({
 			orderBy: {
 				invoiceDate: "desc",
@@ -271,17 +271,12 @@ export const getInvoices = async () => {
 };
 
 export const getInvoice = async (code: string) => {
-	try {
-		const invoice = await prisma.invoice.findFirst({
-			where: { invoiceCode: code },
-			include: {
-				invoiceItems: true,
-			},
-		});
+	const invoice = await prisma.invoice.findFirst({
+		where: { invoiceCode: code },
+		include: {
+			invoiceItems: true,
+		},
+	});
 
-		return invoice
-	} catch (error) {
-		console.error(error);
-		throw error; // Re-throw the error to handle it in the component
-	}
+	return invoice
 };

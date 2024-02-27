@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { FaCircle, FaPlus } from "react-icons/fa";
+import React from "react";
+import { FaCircle, FaPlus, FaAngleDown } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Image from "next/image";
 import { Invoice } from "@/lib/types";
@@ -16,7 +16,7 @@ const InvoicePage = async () => {
 			<span className="flex items-center justify-between align-middle mb-[60px]">
 				<div>
 					<span>
-						<h1 className="font-bold">Invoices</h1>
+						<h1 className="font-bold black-text">Invoices</h1>
 						<p>
 							{invoices != undefined
 								? `There are ${invoices.length} total invoices`
@@ -27,8 +27,12 @@ const InvoicePage = async () => {
 				<span className="flex items-center gap-12">
 					<span className="text-[15px] font-bold ">
 						<span className="dropdown">
-							<span tabIndex={0} role="button" className=" m-1">
-								Filter by status
+							<span
+								tabIndex={0}
+								role="button"
+								className="flex items-center gap-2 m-1 black-text"
+							>
+								Filter by status <FaAngleDown className="text-[#7c5dfa]" />
 							</span>
 							<ul
 								tabIndex={0}
@@ -76,16 +80,16 @@ const InvoicePage = async () => {
 						<span className="invoices" key={index}>
 							<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 								<span className="font-bold flex-1 text-[22px]">
-									#<span className="text-[#0c0e16]">{invoice.invoiceCode}</span>
+									#<span className="black-text">{invoice.invoiceCode}</span>
 								</span>
 								<span className="date flex-1 text-[#888eb0]  font-medium">
 									{format(invoice.invoiceDate, "dd LLL yyyy")}
 								</span>
-								<span className="font-medium flex-1 text-[#888eb0] mr-[40px]">
+								<span className="font-medium flex-1 light-gray mr-[40px]">
 									{invoice.clientName}
 								</span>
 								<span></span>
-								<span className="font-bold flex-1 text-[22px] text-[#0c0e16]">{`
+								<span className="font-bold flex-1 text-[22px] black-text">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",

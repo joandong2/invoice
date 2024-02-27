@@ -61,6 +61,22 @@ body {
 	margin-bottom: 0;
 }
 
+.black-text {
+	color: #0c0e16;
+}
+
+.dark .black-text {
+	color: #fff;
+}
+
+.light-grey {
+	color: #888eb0;
+}
+
+.dark .light-grey {
+	color: #fff;
+}
+
 .dark .invoices {
 	color: #fff;
 	background: #1e2139;
@@ -85,17 +101,17 @@ body {
 	color: #373b53;
 }
 
-.dark  .draft {
+.dark .draft {
 	background: #292c44;
 	color: #dfe3fa;
 }
 
-.dark  .pending {
+.dark .pending {
 	background: #2b2736;
 	color: #ff8f00;
 }
 
-.dark  .paid {
+.dark .paid {
 	background: rgba(31, 43, 63);
 	color: #33d69f;
 }
