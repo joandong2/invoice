@@ -1,4 +1,6 @@
-import React from "react";
+'use client'
+
+import React, { useEffect, useState } from "react";
 import { FaCircle, FaPlus, FaAngleDown } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import Image from "next/image";
@@ -8,8 +10,40 @@ import AddInvoice from "./AddInvoice";
 import { getInvoices } from "@/lib/_actions";
 import { format } from "date-fns";
 
-const InvoicePage = async () => {
-	const invoices = await getInvoices();
+const InvoicePage = () => {
+	const [invoices, setInvoices] = useState<Invoice[]>([]);
+	const [checkboxes, setCheckboxes] = useState(['paid', 'pending', 'draft']);
+	const [isMounted, setIsMounted] = useState<boolean>(true);
+
+	const handleCheckboxChange = (checkboxName: string) => {
+		setCheckboxes((prev) => {
+			const updatedCheckboxes = [...prev];
+			const index = updatedCheckboxes.indexOf(checkboxName);
+			if (index !== -1) {
+				// Checkbox is already in the array, remove it
+				updatedCheckboxes.splice(index, 1);
+			} else {
+				// Checkbox is not in the array, insert it
+				updatedCheckboxes.push(checkboxName);
+			}
+			return updatedCheckboxes;
+		});
+	};
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const result = await getInvoices(checkboxes);
+				setInvoices(result);
+			} catch (error) {
+				console.error("Error fetching invoices:", error);
+			} finally {
+				setIsMounted(false);
+			}
+		};
+
+		fetchData();
+	}, [checkboxes]);
 
 	return (
 		<>
@@ -36,13 +70,40 @@ const InvoicePage = async () => {
 							</span>
 							<ul
 								tabIndex={0}
-								className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+								className="dropdown-content z-[1] menu p-1 shadow bg-base-100 rounded-box w-36"
 							>
 								<li>
-									<a>Draft</a>
+									<span className="flex">
+										<input
+											type="checkbox"
+											onChange={() => handleCheckboxChange("draft")}
+											className="checkbox-xs bg-[#8c71fa]"
+											checked={checkboxes.includes("draft")}
+										/>
+										<span className="label-text">Draft</span>
+									</span>
 								</li>
 								<li>
-									<a>Pending</a>
+									<span className="flex">
+										<input
+											type="checkbox"
+											checked={checkboxes.includes("pending")}
+											onChange={() => handleCheckboxChange("pending")}
+											className="checkbox-xs"
+										/>
+										<span className="label-text">Pending</span>
+									</span>
+								</li>
+								<li>
+									<span className="flex">
+										<input
+											type="checkbox"
+											checked={checkboxes.includes("paid")}
+											onChange={() => handleCheckboxChange("paid")}
+											className="checkbox-xs"
+										/>
+										<span className="label-text">Paid</span>
+									</span>
 								</li>
 							</ul>
 						</span>
@@ -66,7 +127,7 @@ const InvoicePage = async () => {
 								aria-label="close sidebar"
 								className="drawer-overlay"
 							></label>
-							<ul className="menu  w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
+							<ul className="menu  w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4 pb-10">
 								{/* Sidebar content here */}
 								<AddInvoice />
 							</ul>
@@ -75,7 +136,9 @@ const InvoicePage = async () => {
 				</span>
 			</span>
 			<span>
-				{invoices.length > 0 ? (
+				{isMounted ? (
+					<>Loading...</>
+				) : invoices.length > 0 ? (
 					invoices.map((invoice: Invoice, index) => (
 						<span className="invoices" key={index}>
 							<span className="hidden md:flex w-full justify-evenly items-center gap-15">

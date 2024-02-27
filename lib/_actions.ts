@@ -119,31 +119,6 @@ export const editInvoice = async (data: Inputs) => {
 		const origDate = new Date(data.invoiceDate);
 		const dueDate = addDays(origDate, Number(data.paymentTerms));
 
-		const invoiceData = {
-			invoiceCode: data.invoiceCode as string,
-			description: data.description as string,
-			status: data.status as string,
-			amount: Number(
-				data.itemLists.reduce(
-					(accum, item) => accum + item.itemPrice * item.itemQuantity,
-					0
-				)
-			),
-			paymentTerms: data.paymentTerms as string,
-			invoiceDate: origDate,
-			dueDate: dueDate,
-			billFromStreetAddress: data.billFromStreetAddress as string,
-			billFromCity: data.billFromCity as string,
-			billFromPostcode: data.billFromPostcode as string,
-			billFromCountry: data.billFromCountry as string,
-			clientEmail: data.clientEmail as string,
-			clientName: data.clientName as string,
-			clientStreetAddress: data.clientStreetAddress as string,
-			clientCity: data.clientCity as string,
-			clientPostCode: data.clientPostCode as string,
-			clientCountry: data.clientCountry as string,
-		};
-
 		// Use an update operation for existing invoices, or create a new one if necessary
 		await prisma.invoice.update({
 			where: { invoiceCode: data.invoiceCode as string },
@@ -178,6 +153,7 @@ export const editInvoice = async (data: Inputs) => {
 		return {
 			status: "success",
 		};
+
 	} catch (error) {
 		console.error('Error editing invoice:', error);
 		return {
@@ -228,7 +204,7 @@ export const deleteInvoice = async (data : string) => {
 			await prisma.invoiceItem.delete({
 				where: { id: item.id },
 			});
-			// Or update related invoice item to remove the reference to the invoice
+			// Or update related invoice item
 			// await prisma.invoiceItem.update({
 			//   where: { id: item.id },
 			//   data: { invoiceId: null },
@@ -257,17 +233,24 @@ export const deleteInvoice = async (data : string) => {
 
 }
 
-export const getInvoices = async ( status?: string ) => {
+export const getInvoices = async ( status?: string[] ) => {
+
 	const invoices = await prisma.invoice.findMany({
-			orderBy: {
-				invoiceDate: "desc",
+		where: {
+			status: {
+				in: status?.length ? status : [],
 			},
-			include: {
-				invoiceItems: true,
-			},
-		});
-		revalidatePath("/");
-		return invoices
+		},
+		orderBy: {
+			invoiceDate: "desc",
+		},
+		include: {
+			invoiceItems: true,
+		},
+	});
+
+	revalidatePath("/");
+	return invoices
 };
 
 export const getInvoice = async (code: string) => {

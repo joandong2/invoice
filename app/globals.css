@@ -116,6 +116,34 @@ body {
 	color: #33d69f;
 }
 
+.dark .drawer-side .menu {
+	background: #141625;
+}
+
+.light-blue {
+	background: #fff;
+}
+
+.dark .light-blue {
+	background: #1e2139;
+}
+
+.dark-blue {
+	background: #373b53;
+}
+
+.blue {
+	background-color: #f9fafe;
+}
+
+.dark .blue {
+	background-color: #252945;
+}
+
+.dark .dark-blue {
+	background: #0c0e16;
+}
+
 input,
 select,
 textarea {

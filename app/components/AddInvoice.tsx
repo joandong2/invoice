@@ -52,7 +52,7 @@ const AddInvoice = () => {
 
 	return (
 		<div className="h-full">
-			<h1 className="font-bold mb-8">New Invoice</h1>
+			<h1 className="font-bold mb-8 black-text">New Invoice</h1>
 
 			<form
 				onSubmit={handleSubmit(processEditForm)}

@@ -52,7 +52,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 	};
 
 	return (
-		<span className="flex justify-end">
+		<span className="flex justify-end w-full pl-12 gap-2">
 			<span className="drawer z-10 w-auto">
 				<input id="my-drawer" type="checkbox" className="drawer-toggle" />
 				<span className="drawer-content">
@@ -84,7 +84,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 					className="input input-bordered w-full"
 					{...register("invoiceCode")}
 				/>
-				<span className="flex">
+				<span className="flex gap-2">
 					<button
 						className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
 						onClick={() => {
