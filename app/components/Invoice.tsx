@@ -1,4 +1,4 @@
-//'use client'
+'use client'
 
 import React, { useEffect, useState } from "react";
 import { FaCircle, FaPlus, FaAngleDown } from "react-icons/fa";
@@ -10,41 +10,40 @@ import AddInvoice from "./AddInvoice";
 import { getInvoices } from "@/lib/_actions";
 import { format } from "date-fns";
 
-const InvoicePage = async () => {
-	// const [invoices, setInvoices] = useState<Invoice[]>([]);
-	// const [checkboxes, setCheckboxes] = useState(['paid', 'pending', 'draft']);
-	// const [isMounted, setIsMounted] = useState<boolean>(false);
+const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
+	const [invoicesState, setInvoicesState] = useState<Invoice[]>(invoices);
+	const [checkboxes, setCheckboxes] = useState<string[]>([
+		"paid",
+		"pending",
+		"draft",
+	]);
+	const [isMounted, setIsMounted] = useState<boolean>(true);
 
-	// const handleCheckboxChange = (checkboxName: string) => {
-	// 	setCheckboxes((prev) => {
-	// 		const updatedCheckboxes = [...prev];
-	// 		const index = updatedCheckboxes.indexOf(checkboxName);
-	// 		if (index !== -1) {
-	// 			// remove
-	// 			updatedCheckboxes.splice(index, 1);
-	// 		} else {
-	// 			// insert
-	// 			updatedCheckboxes.push(checkboxName);
-	// 		}
-	// 		return updatedCheckboxes;
-	// 	});
-	// };
+	const handleCheckboxChange = (checkboxName: string) => {
+		setCheckboxes((prev) => {
+			const updatedCheckboxes = [...prev];
+			const index = updatedCheckboxes.indexOf(checkboxName);
+			if (index !== -1) {
+				// remove
+				updatedCheckboxes.splice(index, 1);
+			} else {
+				// insert
+				updatedCheckboxes.push(checkboxName);
+			}
+			return updatedCheckboxes;
+		});
+	};
 
-	// const fetchData = async () => {
-	// 	setIsMounted(true);
-	// 	const result = await getInvoices(checkboxes);
-	// 	setInvoices(result);
-	// };
+	useEffect(() => {
+		setIsMounted(false);
+		const fetchData = async () => {
+			const result = await getInvoices(checkboxes);
+			setInvoicesState(result);
+		};
+		fetchData();
+		setIsMounted(true);
+	}, [checkboxes]);
 
-	// useEffect(() => {
-	// 	//if (isMounted) {
-	// 		fetchData();
-	// 	//}
-	// }, [checkboxes]);
-
-	// console.log('isMounted', isMounted);
-
-	const invoices = await getInvoices();
 
 	return (
 		<>
@@ -53,8 +52,8 @@ const InvoicePage = async () => {
 					<span>
 						<h1 className="font-bold black-text">Invoices</h1>
 						<p>
-							{invoices != undefined
-								? `There are ${invoices.length} total invoices`
+							{invoicesState != undefined
+								? `There are ${invoicesState.length} total invoices`
 								: "No invoices."}
 						</p>
 					</span>
@@ -73,7 +72,7 @@ const InvoicePage = async () => {
 								tabIndex={0}
 								className="dropdown-content z-[1] menu p-1 shadow bg-base-100 rounded-box w-36"
 							>
-								{/* <li>
+								<li>
 									<span className="flex">
 										<input
 											type="checkbox"
@@ -105,7 +104,7 @@ const InvoicePage = async () => {
 										/>
 										<span className="label-text">Paid</span>
 									</span>
-								</li> */}
+								</li>
 							</ul>
 						</span>
 					</span>
@@ -137,62 +136,63 @@ const InvoicePage = async () => {
 				</span>
 			</span>
 			<span>
-				{invoices ? (
-					invoices.length > 0 ? (
-					invoices.map((invoice: Invoice, index) => (
-						<span className="invoices" key={index}>
-							<span className="hidden md:flex w-full justify-evenly items-center gap-15">
-								<span className="font-bold flex-1 text-[22px]">
-									#<span className="black-text">{invoice.invoiceCode}</span>
-								</span>
-								<span className="date flex-1 text-[#888eb0]  font-medium">
-									{format(invoice.invoiceDate, "dd LLL yyyy")}
-								</span>
-								<span className="font-medium flex-1 light-gray mr-[40px]">
-									{invoice.clientName}
-								</span>
-								<span></span>
-								<span className="font-bold flex-1 text-[22px] black-text">{`
+				{isMounted ? (
+					invoicesState.length > 0 ? (
+						invoicesState.map((invoice: Invoice, index) => (
+							<span className="invoices" key={index}>
+								<span className="hidden md:flex w-full justify-evenly items-center gap-15">
+									<span className="font-bold flex-1 text-[22px]">
+										#<span className="black-text">{invoice.invoiceCode}</span>
+									</span>
+									<span className="date flex-1 text-[#888eb0]  font-medium">
+										{format(invoice.invoiceDate, "dd LLL yyyy")}
+									</span>
+									<span className="font-medium flex-1 light-gray mr-[40px]">
+										{invoice.clientName}
+									</span>
+									<span></span>
+									<span className="font-bold flex-1 text-[22px] black-text">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",
 								})}`}</span>
-								<span className={`flex-1`}>
-									<span
-										className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
-									>
-										<FaCircle className="text-[9px]" />{" "}
-										<span className="capitalize">{invoice.status}</span>
+									<span className={`flex-1`}>
+										<span
+											className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
+										>
+											<FaCircle className="text-[9px]" />{" "}
+											<span className="capitalize">{invoice.status}</span>
+										</span>
+									</span>
+									<span className="">
+										<Link
+											href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
+										>
+											<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
+										</Link>
 									</span>
 								</span>
-								<span className="">
-									<Link href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}>
-										<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
-									</Link>
-								</span>
 							</span>
-						</span>
-					))
+						))
 					) : (
 						<span className="flex flex-col align-middle text-center items-center">
-						<Image
-							src="/assets/illustration-empty.svg"
-							width="500"
-							height="500"
-							alt="Image Best Gear"
-							className="mb-10"
-						/>
-						<h1>There is nothing here</h1>
-						<p>
-							Create an invoice by clicking{" "}
-							<span className="bold">New Invoice</span> button and get started
-						</p>
-					</span>
+							<Image
+								src="/assets/illustration-empty.svg"
+								width="500"
+								height="500"
+								alt="Image Best Gear"
+								className="mb-10"
+							/>
+							<h1>There is nothing here</h1>
+							<p>
+								Create an invoice by clicking{" "}
+								<span className="bold">New Invoice</span> button and get started
+							</p>
+						</span>
 					)
 				) : (
 					<span className="loading loading-spinner loading-lg"></span>
-				)
-				}
+				)}
 			</span>
 		</>
 	);
