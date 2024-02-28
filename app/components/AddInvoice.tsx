@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
+import { revalidatePath } from "next/cache";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
@@ -47,6 +48,7 @@ const AddInvoice = () => {
 		if (result?.status == "success") {
 			toast.success("Invoice Created", {});
 		}
+		revalidatePath('/')
 		reset();
 	};
 
@@ -268,14 +270,14 @@ const AddInvoice = () => {
 							<span className="md:grid md:grid-cols-10 gap-3 mb-3" key={index}>
 								<span className="col-span-4">
 									<input
-										key={field.id}
+										key={index}
 										{...register(`itemLists.${index}.itemName`)}
 										className="input input-bordered w-full"
 									/>
 								</span>
 								<span className="col-span-2">
 									<input
-										key={field.id}
+										key={index}
 										{...register(`itemLists.${index}.itemQuantity`)}
 										type="text"
 										className="input input-bordered w-full"
@@ -284,7 +286,7 @@ const AddInvoice = () => {
 								<span className="col-span-2">
 									<input
 										type="number"
-										key={field.id}
+										key={index}
 										{...register(`itemLists.${index}.itemPrice`)}
 										className="input input-bordered w-full"
 									/>

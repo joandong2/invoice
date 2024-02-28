@@ -1,4 +1,4 @@
-'use client'
+//'use client'
 
 import React, { useEffect, useState } from "react";
 import { FaCircle, FaPlus, FaAngleDown } from "react-icons/fa";
@@ -10,40 +10,41 @@ import AddInvoice from "./AddInvoice";
 import { getInvoices } from "@/lib/_actions";
 import { format } from "date-fns";
 
-const InvoicePage = () => {
-	const [invoices, setInvoices] = useState<Invoice[]>([]);
-	const [checkboxes, setCheckboxes] = useState(['paid', 'pending', 'draft']);
-	const [isMounted, setIsMounted] = useState<boolean>(true);
+const InvoicePage = async () => {
+	// const [invoices, setInvoices] = useState<Invoice[]>([]);
+	// const [checkboxes, setCheckboxes] = useState(['paid', 'pending', 'draft']);
+	// const [isMounted, setIsMounted] = useState<boolean>(false);
 
-	const handleCheckboxChange = (checkboxName: string) => {
-		setCheckboxes((prev) => {
-			const updatedCheckboxes = [...prev];
-			const index = updatedCheckboxes.indexOf(checkboxName);
-			if (index !== -1) {
-				// Checkbox is already in the array, remove it
-				updatedCheckboxes.splice(index, 1);
-			} else {
-				// Checkbox is not in the array, insert it
-				updatedCheckboxes.push(checkboxName);
-			}
-			return updatedCheckboxes;
-		});
-	};
+	// const handleCheckboxChange = (checkboxName: string) => {
+	// 	setCheckboxes((prev) => {
+	// 		const updatedCheckboxes = [...prev];
+	// 		const index = updatedCheckboxes.indexOf(checkboxName);
+	// 		if (index !== -1) {
+	// 			// remove
+	// 			updatedCheckboxes.splice(index, 1);
+	// 		} else {
+	// 			// insert
+	// 			updatedCheckboxes.push(checkboxName);
+	// 		}
+	// 		return updatedCheckboxes;
+	// 	});
+	// };
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const result = await getInvoices(checkboxes);
-				setInvoices(result);
-			} catch (error) {
-				console.error("Error fetching invoices:", error);
-			} finally {
-				setIsMounted(false);
-			}
-		};
+	// const fetchData = async () => {
+	// 	setIsMounted(true);
+	// 	const result = await getInvoices(checkboxes);
+	// 	setInvoices(result);
+	// };
 
-		fetchData();
-	}, [checkboxes]);
+	// useEffect(() => {
+	// 	//if (isMounted) {
+	// 		fetchData();
+	// 	//}
+	// }, [checkboxes]);
+
+	// console.log('isMounted', isMounted);
+
+	const invoices = await getInvoices();
 
 	return (
 		<>
@@ -72,7 +73,7 @@ const InvoicePage = () => {
 								tabIndex={0}
 								className="dropdown-content z-[1] menu p-1 shadow bg-base-100 rounded-box w-36"
 							>
-								<li>
+								{/* <li>
 									<span className="flex">
 										<input
 											type="checkbox"
@@ -104,7 +105,7 @@ const InvoicePage = () => {
 										/>
 										<span className="label-text">Paid</span>
 									</span>
-								</li>
+								</li> */}
 							</ul>
 						</span>
 					</span>
@@ -136,9 +137,8 @@ const InvoicePage = () => {
 				</span>
 			</span>
 			<span>
-				{isMounted ? (
-					<>Loading...</>
-				) : invoices.length > 0 ? (
+				{invoices ? (
+					invoices.length > 0 ? (
 					invoices.map((invoice: Invoice, index) => (
 						<span className="invoices" key={index}>
 							<span className="hidden md:flex w-full justify-evenly items-center gap-15">
@@ -173,8 +173,8 @@ const InvoicePage = () => {
 							</span>
 						</span>
 					))
-				) : (
-					<span className="flex flex-col align-middle text-center items-center">
+					) : (
+						<span className="flex flex-col align-middle text-center items-center">
 						<Image
 							src="/assets/illustration-empty.svg"
 							width="500"
@@ -188,7 +188,11 @@ const InvoicePage = () => {
 							<span className="bold">New Invoice</span> button and get started
 						</p>
 					</span>
-				)}
+					)
+				) : (
+					<span className="loading loading-spinner loading-lg"></span>
+				)
+				}
 			</span>
 		</>
 	);

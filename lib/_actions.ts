@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/prisma";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { addDays } from "date-fns";
@@ -56,7 +55,6 @@ export const createInvoice = async (data: Inputs) => {
 				});
 
 				if (newInvoice) {
-					revalidatePath("/");
 					return {
 						status: "success",
 					};
@@ -149,7 +147,6 @@ export const editInvoice = async (data: Inputs) => {
 		});
 
 		// Assuming you have a function called 'revalidatePath' to trigger revalidation
-		revalidatePath("/");
 		return {
 			status: "success",
 		};
@@ -217,8 +214,6 @@ export const deleteInvoice = async (data : string) => {
 			},
 		});
 
-		revalidatePath("/");
-
 		return {
 			status: "success",
 			data,
@@ -235,22 +230,25 @@ export const deleteInvoice = async (data : string) => {
 
 export const getInvoices = async ( status?: string[] ) => {
 
-	const invoices = await prisma.invoice.findMany({
-		where: {
-			status: {
-				in: status?.length ? status : [],
+	try {
+		const invoices = await prisma.invoice.findMany({
+			where: {
+				status: {
+					in: status?.length ? status : ['paid', 'pending', 'draft'],
+				},
 			},
-		},
-		orderBy: {
-			invoiceDate: "desc",
-		},
-		include: {
-			invoiceItems: true,
-		},
-	});
-
-	revalidatePath("/");
-	return invoices
+			orderBy: {
+				invoiceDate: "desc",
+			},
+			include: {
+				invoiceItems: true,
+			},
+		});
+		return invoices;
+	} catch (error) {
+		console.error("Error fetching invoices:", error);
+		throw error; // Rethrow the error to handle it in the calling code.
+	}
 };
 
 export const getInvoice = async (code: string) => {

@@ -13,6 +13,7 @@ import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
 import { Invoice } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
@@ -67,13 +68,14 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 		if (result?.status == "success") {
 			toast.success("Invoice Updated", {});
 		}
+		revalidatePath('/')
 		// reset();
 	};
 
 	return (
 		<>
 			{isMounted ? (
-				<>Loading...</>
+				<span className="loading loading-spinner loading-lg"></span>
 			) : (
 				<span className="h-full">
 					<h1 className="font-bold mb-8">New Invoice</h1>

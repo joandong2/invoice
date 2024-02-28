@@ -8,6 +8,7 @@ import { getInvoice } from '@/lib/_actions';
 import Buttons from '@/app/components/Buttons';
 
 const Page = async ({ params }: { params: { invoiceCode: string } }) => {
+
 	const invoice = await getInvoice(params.invoiceCode.toUpperCase());
 
     return (
