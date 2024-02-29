@@ -6,9 +6,5 @@ export default async function Home() {
 
 	const invoices = await getInvoices();
 
-	return (
-		<div>
-			<Invoice invoices={invoices} />
-		</div>
-	);
+	return <div>{invoices && <Invoice invoices={invoices} />}</div>;
 }

@@ -38,7 +38,12 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 		setIsMounted(false);
 		const fetchData = async () => {
 			const result = await getInvoices(checkboxes);
-			setInvoicesState(result);
+			//getInvoices can return an object with a status and error property, which may be causing the issue.
+			if (Array.isArray(result)) {
+				setInvoicesState(result);
+			} else {
+				console.error("Unexpected response format:", result);
+			}
 		};
 		fetchData();
 		setIsMounted(true);

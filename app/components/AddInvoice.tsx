@@ -8,13 +8,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
 const AddInvoice = () => {
 	// used this state for the price and quantity real time update
 	const [itemsList, setItemsList] = useState<any>([]);
+	const router = useRouter();
 
 	const {
 		register,
@@ -47,9 +48,9 @@ const AddInvoice = () => {
 		// console.log("result", result);
 		if (result?.status == "success") {
 			toast.success("Invoice Created", {});
+			reset();
+			router.replace("/");
 		}
-		revalidatePath('/')
-		reset();
 	};
 
 	return (

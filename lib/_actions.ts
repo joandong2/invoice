@@ -4,6 +4,7 @@ import { prisma } from "@/prisma";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { addDays } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -62,10 +63,6 @@ export const createInvoice = async (data: Inputs) => {
 			}
 	} catch (error) {
 		console.error('Error editing invoice:', error);
-		return {
-			status: "error",
-			error: "An error occurred while editing the invoice.",
-		};
 	}
 
 };
@@ -147,16 +144,13 @@ export const editInvoice = async (data: Inputs) => {
 		});
 
 		// Assuming you have a function called 'revalidatePath' to trigger revalidation
+
 		return {
 			status: "success",
 		};
 
 	} catch (error) {
 		console.error('Error editing invoice:', error);
-		return {
-			status: "error",
-			error: "An error occurred while editing the invoice.",
-		};
 	}
 };
 
@@ -178,10 +172,6 @@ export const paidInvoice = async (data: string) => {
 		};
 	} catch (error) {
 		console.error("Error editing invoice:", error);
-		return {
-			status: "error",
-			error: "An error occurred while editing the invoice.",
-		};
 	}
 
 };
@@ -220,10 +210,6 @@ export const deleteInvoice = async (data : string) => {
 		};
 	} catch(error) {
 		console.error("Error editing invoice:", error);
-		return {
-			status: "error",
-			error: "An error occurred while editing the invoice.",
-		};
 	}
 
 }
@@ -246,8 +232,7 @@ export const getInvoices = async ( status?: string[] ) => {
 		});
 		return invoices;
 	} catch (error) {
-		console.error("Error fetching invoices:", error);
-		throw error; // Rethrow the error to handle it in the calling code.
+		console.error("Error editing invoice:", error);
 	}
 };
 

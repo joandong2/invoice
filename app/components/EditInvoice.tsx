@@ -13,11 +13,12 @@ import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
 import { Invoice } from "@/lib/types";
-import { revalidatePath } from "next/cache";
+import { useRouter } from "next/navigation";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
 const EditInvoice = ({invoice} : {invoice : Invoice}) => {
+	const router = useRouter();
 	const [itemsList, setItemsList] = useState<any>();
 	const [isMounted, setIsMounted] = useState<boolean>(true);
 	const origDate = new Date(invoice.invoiceDate);
@@ -64,12 +65,11 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await editInvoice(data);
-		console.log("result", result);
+		//console.log("result", result);
 		if (result?.status == "success") {
 			toast.success("Invoice Updated", {});
+			router.refresh();
 		}
-		revalidatePath('/')
-		// reset();
 	};
 
 	return (
