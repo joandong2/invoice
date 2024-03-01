@@ -32,7 +32,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 			console.log(alertState)
 			if(alertState == 'delete') {
 				const result = await deleteInvoice(data.invoiceCode);
-				if (result.status === "success") {
+				if (result?.status === "success") {
 					toast.success("Invoice Deleted", {});
 					toggleAlert(false);
 					router.refresh();
@@ -41,7 +41,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 				router.push("/");
 			} else {
 				const result = await paidInvoice(data.invoiceCode);
-				if (result.status === "success") {
+				if (result?.status === "success") {
 					toast.success("Invoice Updated", {});
 				    toggleAlert(false);
 				    router.refresh();

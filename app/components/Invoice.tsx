@@ -11,7 +11,7 @@ import { getInvoices } from "@/lib/_actions";
 import { format } from "date-fns";
 
 const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
-	const [invoicesState, setInvoicesState] = useState<Invoice[]>(invoices);
+	const [invoicesState, setInvoicesState] = useState<Invoice[] | undefined>();
 	const [checkboxes, setCheckboxes] = useState<string[]>([
 		"paid",
 		"pending",
@@ -33,6 +33,14 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 			return updatedCheckboxes;
 		});
 	};
+
+	useEffect(() => {
+		setIsMounted(false);
+		if(isMounted) {
+			setInvoicesState(invoices);
+			setIsMounted(true);
+		}
+	}, [invoices]);
 
 	useEffect(() => {
 		setIsMounted(false);
@@ -141,9 +149,9 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 				</span>
 			</span>
 			<span>
-				{isMounted ? (
+				{isMounted && invoicesState ? (
 					invoicesState.length > 0 ? (
-						invoicesState.map((invoice: Invoice, index) => (
+						invoicesState?.map((invoice: Invoice, index) => (
 							<span className="invoices" key={index}>
 								<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 									<span className="font-bold flex-1 text-[22px]">

@@ -4,7 +4,8 @@ import { prisma } from "@/prisma";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { addDays } from "date-fns";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -56,6 +57,7 @@ export const createInvoice = async (data: Inputs) => {
 				});
 
 				if (newInvoice) {
+					revalidatePath('/')
 					return {
 						status: "success",
 					};
@@ -144,7 +146,6 @@ export const editInvoice = async (data: Inputs) => {
 		});
 
 		// Assuming you have a function called 'revalidatePath' to trigger revalidation
-
 		return {
 			status: "success",
 		};
@@ -215,25 +216,20 @@ export const deleteInvoice = async (data : string) => {
 }
 
 export const getInvoices = async ( status?: string[] ) => {
-
-	try {
-		const invoices = await prisma.invoice.findMany({
-			where: {
-				status: {
-					in: status?.length ? status : ['paid', 'pending', 'draft'],
-				},
+	const invoices = await prisma.invoice.findMany({
+		where: {
+			status: {
+				in: status?.length ? status : ['paid', 'pending', 'draft'],
 			},
-			orderBy: {
-				invoiceDate: "desc",
-			},
-			include: {
-				invoiceItems: true,
-			},
-		});
-		return invoices;
-	} catch (error) {
-		console.error("Error editing invoice:", error);
-	}
+		},
+		orderBy: {
+			invoiceDate: "desc",
+		},
+		include: {
+			invoiceItems: true,
+		},
+	});
+	return invoices;
 };
 
 export const getInvoice = async (code: string) => {
