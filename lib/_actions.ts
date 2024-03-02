@@ -57,7 +57,7 @@ export const createInvoice = async (data: Inputs) => {
 				});
 
 				if (newInvoice) {
-					revalidatePath('/')
+					//revalidatePath('/')
 					return {
 						status: "success",
 					};

@@ -107,7 +107,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 				{alert == true ? (
 					<span
 						role="alert"
-						className="alert absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 w-[450px]"
+						className="alert absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 w-[450px] bg-white"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -123,20 +123,20 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 							></path>
 						</svg>
 						<span>Are you sure?</span>
-						<span>
+						<span className="flex gap-1">
 							<button
-								className="btn btn-sm mr-3"
+								className="btn text-[16px] font-bold bg-[#f9fafe] rounded-[25px] py-4 px-8 border-none text-[#7e88c3]"
 								onClick={() => toggleAlert(false)}
 							>
 								Cancel
 							</button>
 							<button
-								className="btn btn-sm btn-primary"
+								className="btn text-[16px] text-white font-bold bg-[#ec5757] rounded-[25px] py-4 px-8 border-none"
 								onClick={() => {
 									formSubmitState(true);
 								}}
 							>
-								Accept
+								Yes
 							</button>
 						</span>
 					</span>
