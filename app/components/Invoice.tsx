@@ -159,7 +159,7 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 				{isMounted && invoicesState ? (
 					invoicesState.length > 0 ? (
 						invoicesState?.map((invoice: Invoice, index) => (
-							<>
+							<Link href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}>
 								<span className="invoices" key={index}>
 									<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 										<span className="font-bold flex-1 text-[22px]">
@@ -171,7 +171,6 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 										<span className="font-medium flex-1 light-gray mr-[40px]">
 											{invoice.clientName}
 										</span>
-										<span></span>
 										<span className="font-bold flex-1 text-[22px] black-text">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
@@ -186,11 +185,11 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 											</span>
 										</span>
 										<span className="">
-											<Link
+											{/* <Link
 												href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
-											>
-												<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
-											</Link>
+											> */}
+											<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
+											{/* </Link> */}
 										</span>
 									</span>
 									<span className="block md:hidden w-full justify-evenly items-center gap-15">
@@ -222,7 +221,7 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 										</span>
 									</span>
 								</span>
-							</>
+							</Link>
 						))
 					) : (
 						<span className="flex flex-col align-middle text-center items-center">

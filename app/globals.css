@@ -57,9 +57,9 @@ body {
 	width: 100%;
 }
 
-.invoices:last-child {
+/* .invoices:last-child {
 	margin-bottom: 0;
-}
+} */
 
 .black-text {
 	color: #0c0e16;
