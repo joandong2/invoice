@@ -271,7 +271,7 @@ const AddInvoice = () => {
 						{fields.map((field, index) => (
 							<>
 								<span
-									className="flex flex-wrap md:grid md:grid-cols-10 gap-3 mb-3"
+									className="flex flex-wrap md:flex-nowrap md:grid md:grid-cols-10 gap-3 mb-3"
 									key={index}
 								>
 									<span className="col-span-4 shrink-0 w-[100%]">
@@ -281,7 +281,7 @@ const AddInvoice = () => {
 											className="input input-bordered w-full"
 										/>
 									</span>
-									<span className="col-span-2">
+									<span className="w-[40%] md:w-auto col-span-2">
 										<input
 											key={index}
 											{...register(`itemLists.${index}.itemQuantity`)}
@@ -289,7 +289,7 @@ const AddInvoice = () => {
 											className="input input-bordered w-full"
 										/>
 									</span>
-									<span className="col-span-2">
+									<span className="w-[40%] md:w-auto col-span-2">
 										<input
 											type="number"
 											key={index}
@@ -314,6 +314,7 @@ const AddInvoice = () => {
 									>
 										<AiFillDelete className="text-[18px] text-[#888eb0]" />
 									</span>
+									<span className="flex md:hidden h-[1px] w-[96%] bg-[#e1e1e1] m-auto my-4"></span>
 								</span>
 							</>
 						))}
