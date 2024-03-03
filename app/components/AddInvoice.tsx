@@ -65,7 +65,7 @@ const AddInvoice = () => {
 				<input
 					type="hidden"
 					{...register("invoiceCode")}
-					defaultValue={Math.random().toString(36).slice(2, 8).toUpperCase()}
+					defaultValue={Math.random().toString(36).slice(1, 9).toUpperCase()}
 				/>
 				<h4 className="text-[#7c5dfa] font-bold mb-2">Bill From</h4>
 				<span className="form-control w-full">
@@ -258,7 +258,7 @@ const AddInvoice = () => {
 				</span>
 				<h4 className="text-[#7c5dfa] font-bold mb-4">Item List</h4>
 				<span className="mb-12 items-list">
-					<span className="md:grid md:grid-cols-10">
+					<span className="hidden md:grid md:grid-cols-10">
 						<span className="col-span-4 text-[#7e88c3] font-medium">
 							Item Name
 						</span>
@@ -269,48 +269,53 @@ const AddInvoice = () => {
 					</span>
 					<span className="items" id="items">
 						{fields.map((field, index) => (
-							<span className="md:grid md:grid-cols-10 gap-3 mb-3" key={index}>
-								<span className="col-span-4">
-									<input
-										key={index}
-										{...register(`itemLists.${index}.itemName`)}
-										className="input input-bordered w-full"
-									/>
-								</span>
-								<span className="col-span-2">
-									<input
-										key={index}
-										{...register(`itemLists.${index}.itemQuantity`)}
-										type="text"
-										className="input input-bordered w-full"
-									/>
-								</span>
-								<span className="col-span-2">
-									<input
-										type="number"
-										key={index}
-										{...register(`itemLists.${index}.itemPrice`)}
-										className="input input-bordered w-full"
-									/>
-								</span>
-								<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
-									{itemsList.itemLists && itemsList.itemLists.length > index
-										? (
-												Number(itemsList.itemLists[index].itemPrice) *
-												Number(itemsList.itemLists[index].itemQuantity)
-										  ).toLocaleString("en-US", {
-												style: "currency",
-												currency: "USD",
-										  })
-										: 0}
-								</span>
+							<>
 								<span
-									onClick={() => remove(index)}
-									className="total col-span-1 cursor-pointer flex flex-col justify-center"
+									className="flex flex-wrap md:grid md:grid-cols-10 gap-3 mb-3"
+									key={index}
 								>
-									<AiFillDelete className="text-[18px] text-[#888eb0]" />
+									<span className="col-span-4 shrink-0 w-[100%]">
+										<input
+											key={index}
+											{...register(`itemLists.${index}.itemName`)}
+											className="input input-bordered w-full"
+										/>
+									</span>
+									<span className="col-span-2">
+										<input
+											key={index}
+											{...register(`itemLists.${index}.itemQuantity`)}
+											type="text"
+											className="input input-bordered w-full"
+										/>
+									</span>
+									<span className="col-span-2">
+										<input
+											type="number"
+											key={index}
+											{...register(`itemLists.${index}.itemPrice`)}
+											className="input input-bordered w-full"
+										/>
+									</span>
+									<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center">
+										{itemsList.itemLists && itemsList.itemLists.length > index
+											? (
+													Number(itemsList.itemLists[index].itemPrice) *
+													Number(itemsList.itemLists[index].itemQuantity)
+											  ).toLocaleString("en-US", {
+													style: "currency",
+													currency: "USD",
+											  })
+											: 0}
+									</span>
+									<span
+										onClick={() => remove(index)}
+										className="total col-span-1 cursor-pointer flex flex-col justify-center"
+									>
+										<AiFillDelete className="text-[18px] text-[#888eb0]" />
+									</span>
 								</span>
-							</span>
+							</>
 						))}
 					</span>
 					<button

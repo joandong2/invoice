@@ -147,7 +147,7 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 								aria-label="close sidebar"
 								className="drawer-overlay"
 							></label>
-							<ul className="menu  w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4 pb-10">
+							<ul className="menu w-[80%] md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4 pb-10">
 								{/* Sidebar content here */}
 								<AddInvoice />
 							</ul>
