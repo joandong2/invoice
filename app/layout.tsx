@@ -25,7 +25,7 @@ export default function RootLayout({
 			>
 				<Toaster position="top-right" />
 				<Sidebar />
-				<div className="h-full w-[95%] min-h-screen lg:w-3/4 xl:w-1/2 mx-auto pt-[40px] lg:pt-[60px] lg:pb-[60px]">
+				<div className="h-full w-[95%] min-h-screen lg:w-3/4 xl:w-1/2 mx-auto pt-[100px] pb-[80px] lg:pt-[60px] lg:pb-[60px]">
 					<main>{children}</main>
 				</div>
 			</body>

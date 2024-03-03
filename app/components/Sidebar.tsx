@@ -22,7 +22,7 @@ const Sidebar = () => {
 	}, [theme]);
 
 	return (
-		<div className="w-full h-[100%] lg:w-[100px] sidebar text-center z-50">
+		<div className="w-full lg:h-[100%] lg:w-[100px] sidebar text-center z-50">
 			<div className="lg:h-[100%] flex lg:flex-col justify-between align-middle text-center">
 				<span className="items-center flex justify-center px-4 py-6 bg-[#9277ff] rounded-tr-[15px]">
 					<Link href={`/`}>

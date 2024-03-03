@@ -216,20 +216,25 @@ export const deleteInvoice = async (data : string) => {
 }
 
 export const getInvoices = async ( status?: string[] ) => {
-	const invoices = await prisma.invoice.findMany({
-		where: {
-			status: {
-				in: status?.length ? status : ['paid', 'pending', 'draft'],
+	try {
+		const invoices = await prisma.invoice.findMany({
+			where: {
+				status: {
+					in: status?.length ? status : ["paid", "pending", "draft"],
+				},
 			},
-		},
-		orderBy: {
-			invoiceDate: "desc",
-		},
-		include: {
-			invoiceItems: true,
-		},
-	});
-	return invoices;
+			orderBy: {
+				invoiceDate: "desc",
+			},
+			include: {
+				invoiceItems: true,
+			},
+		});
+		return invoices;
+	} catch(error) {
+		console.error("Error editing invoice:", error);
+	}
+
 };
 
 export const getInvoice = async (code: string) => {

@@ -60,15 +60,20 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 
 	return (
 		<>
-			<span className="flex items-center justify-between align-middle mb-[60px]">
+			<span className="flex items-center justify-between align-middle mb-[30px] lg:mb-[60px]">
 				<div>
 					<span>
 						<h1 className="font-bold black-text">Invoices</h1>
-						<p>
+						<span className="hidden lg:block">
 							{invoicesState != undefined
 								? `There are ${invoicesState.length} total invoices`
 								: "No invoices."}
-						</p>
+						</span>
+						<span className="block lg:hidden">
+							{invoicesState != undefined
+								? `${invoicesState.length} invoices`
+								: "No invoices."}
+						</span>
 					</span>
 				</div>
 				<span className="flex items-center gap-12">
@@ -79,7 +84,8 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 								role="button"
 								className="flex items-center gap-2 m-1 black-text"
 							>
-								Filter by status <FaAngleDown className="text-[#7c5dfa]" />
+								Filter <span className="hidden lg:block">by status</span>{" "}
+								<FaAngleDown className="text-[#7c5dfa]" />
 							</span>
 							<ul
 								tabIndex={0}
@@ -126,12 +132,13 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 						<span className="drawer-content">
 							<label
 								htmlFor="my-drawer"
-								className="btn drawer-button text-[15px] text-white font-bold bg-[#7c5dfa] rounded-[25px] px-3 border-none"
+								className="btn drawer-button text-[15px] text-white font-bold bg-[#7c5dfa] rounded-[25px] px-3 border-none flex "
 							>
 								<span className="bg-white rounded-[50%] p-2 mr-3">
 									<FaPlus className=" text-[#7c5dfa] text-[13px]" />
 								</span>
-								New Invoice
+								<span className="block lg:hidden">New</span>
+								<span className="hidden lg:block">New Invoice</span>
 							</label>
 						</span>
 						<span className="drawer-side">
@@ -152,40 +159,70 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 				{isMounted && invoicesState ? (
 					invoicesState.length > 0 ? (
 						invoicesState?.map((invoice: Invoice, index) => (
-							<span className="invoices" key={index}>
-								<span className="hidden md:flex w-full justify-evenly items-center gap-15">
-									<span className="font-bold flex-1 text-[22px]">
-										#<span className="black-text">{invoice.invoiceCode}</span>
-									</span>
-									<span className="date flex-1 text-[#888eb0]  font-medium">
-										{format(invoice.invoiceDate, "dd LLL yyyy")}
-									</span>
-									<span className="font-medium flex-1 light-gray mr-[40px]">
-										{invoice.clientName}
-									</span>
-									<span></span>
-									<span className="font-bold flex-1 text-[22px] black-text">{`
+							<>
+								<span className="invoices" key={index}>
+									<span className="hidden md:flex w-full justify-evenly items-center gap-15">
+										<span className="font-bold flex-1 text-[22px]">
+											#<span className="black-text">{invoice.invoiceCode}</span>
+										</span>
+										<span className="date flex-1 text-[#888eb0]  font-medium">
+											{format(invoice.invoiceDate, "dd LLL yyyy")}
+										</span>
+										<span className="font-medium flex-1 light-gray mr-[40px]">
+											{invoice.clientName}
+										</span>
+										<span></span>
+										<span className="font-bold flex-1 text-[22px] black-text">{`
 								${invoice.amount.toLocaleString("en-US", {
 									style: "currency",
 									currency: "USD",
 								})}`}</span>
-									<span className={`flex-1`}>
-										<span
-											className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
-										>
-											<FaCircle className="text-[9px]" />{" "}
-											<span className="capitalize">{invoice.status}</span>
+										<span className={`flex-1`}>
+											<span
+												className={`w-[80%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
+											>
+												<FaCircle className="text-[9px]" />{" "}
+												<span className="capitalize">{invoice.status}</span>
+											</span>
+										</span>
+										<span className="">
+											<Link
+												href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
+											>
+												<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
+											</Link>
 										</span>
 									</span>
-									<span className="">
-										<Link
-											href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
-										>
-											<IoIosArrowForward className="text-[22px] text-[#7c5dfa] font-bold" />
-										</Link>
+									<span className="block md:hidden w-full justify-evenly items-center gap-15">
+										<span className="flex flex-1 text-[22px] justify-between mb-6">
+											<span className="font-bold black-text">
+												#{invoice.invoiceCode}
+											</span>
+											<span className="text-[16px]">{invoice.clientName}</span>
+										</span>
+										<span className="date flex-1 text-[#888eb0]  font-medium flex justify-between">
+											<span className="flex-col flex">
+												<span className="mb-4">
+													{format(invoice.invoiceDate, "dd LLL yyyy")}
+												</span>
+												<span className="font-bold flex-1 text-[22px] black-text">{`
+								${invoice.amount.toLocaleString("en-US", {
+									style: "currency",
+									currency: "USD",
+								})}`}</span>
+											</span>
+											<span>
+												<span
+													className={`w-[100%] my-0 mx-auto py-3 px-4 text-[16px] font-bold rounded-md ${invoice.status} flex items-center justify-center justify-items-center gap-3 bg-opacity-[.06]`}
+												>
+													<FaCircle className="text-[9px]" />{" "}
+													<span className="capitalize">{invoice.status}</span>
+												</span>
+											</span>
+										</span>
 									</span>
 								</span>
-							</span>
+							</>
 						))
 					) : (
 						<span className="flex flex-col align-middle text-center items-center">
