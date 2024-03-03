@@ -52,7 +52,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 	};
 
 	return (
-		<span className="flex justify-end w-full pl-12 gap-2">
+		<span className="flex justify-end w-full md:pl-12 gap-2 items-center">
 			<span className="drawer z-10 w-auto">
 				<input id="my-drawer" type="checkbox" className="drawer-toggle" />
 				<span className="drawer-content">
@@ -69,7 +69,7 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 						aria-label="close sidebar"
 						className="drawer-overlay"
 					></label>
-					<ul className="menu w-full md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
+					<ul className="menu w-[80%] md:w-1/2 min-h-full bg-base-200 text-base-content lg:pl-[10em] lg:pr-[60px] pt-[40px] pl-4 pr-4">
 						{/* Sidebar content here */}
 						<EditInvoice invoice={invoice} />
 					</ul>

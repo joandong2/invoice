@@ -301,7 +301,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 						</span>
 						<h4 className="text-[#7c5dfa] font-bold mb-4">Item List</h4>
 						<span className="mb-12 items-list">
-							<span className="md:grid md:grid-cols-10">
+							<span className="hidden md:grid md:grid-cols-10">
 								<span className="col-span-4 text-[#7e88c3] font-medium">
 									Item Name
 								</span>
@@ -319,10 +319,10 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 							<span className="items" id="items">
 								{fields.map((field, index) => (
 									<span
-										className="md:grid md:grid-cols-10 gap-3 mb-3"
+										className="flex flex-wrap md:flex-nowrap  md:grid md:grid-cols-10 gap-3 mb-3"
 										key={index}
 									>
-										<span className="col-span-4">
+										<span className="col-span-4 shrink-0 w-[100%]">
 											<input
 												key={field.id}
 												defaultValue={field.itemName}
@@ -348,7 +348,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 												className="input input-bordered w-full"
 											/>
 										</span>
-										<span className="total col-span-1 bold text-[15px] tracking-[.5px] flex flex-col justify-center">
+										<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center">
 											{itemsList?.itemLists && itemsList.itemLists.length > 0
 												? (
 														Number(itemsList.itemLists[index]?.itemPrice) *
@@ -371,6 +371,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 										>
 											<AiFillDelete className="text-[18px] text-[#888eb0]" />
 										</span>
+										<span className="flex md:hidden h-[1px] w-[96%] bg-[#e1e1e1] m-auto my-4"></span>
 									</span>
 								))}
 							</span>

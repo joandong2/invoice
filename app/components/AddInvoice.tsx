@@ -335,11 +335,11 @@ const AddInvoice = () => {
 				</span>
 				<span className="md:grid md:grid-cols-2">
 					<span>
-						<button className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] border-none">
+						<button className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] border-none w-full md:w-auto mb-4 md:mb-0">
 							Discard
 						</button>
 					</span>
-					<span className="flex gap-4 w-full justify-end">
+					<span className="flex gap-4 justify-end w-full md:w-auto">
 						<button
 							{...register("status")}
 							type="submit"
