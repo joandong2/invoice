@@ -164,7 +164,7 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 								href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
 								key={index}
 							>
-								<span className="invoices">
+								<span className="invoices" key={index}>
 									<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 										<span className="font-bold flex-1 text-[22px]">
 											#<span className="black-text">{invoice.invoiceCode}</span>
