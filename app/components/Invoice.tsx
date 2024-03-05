@@ -160,8 +160,11 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 				{isMounted && invoicesState ? (
 					invoicesState.length > 0 ? (
 						invoicesState?.map((invoice: Invoice, index) => (
-							<Link href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}>
-								<span className="invoices" key={index}>
+							<Link
+								href={`/invoices/${invoice.invoiceCode.toLowerCase()}`}
+								key={index}
+							>
+								<span className="invoices">
 									<span className="hidden md:flex w-full justify-evenly items-center gap-15">
 										<span className="font-bold flex-1 text-[22px]">
 											#<span className="black-text">{invoice.invoiceCode}</span>
