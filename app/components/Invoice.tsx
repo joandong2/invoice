@@ -40,7 +40,7 @@ const InvoicePage = ({ invoices }: { invoices  : Invoice[]}) => {
 			setInvoicesState(invoices);
 			setIsMounted(true);
 		}
-	}, [invoices]);
+	}, [invoices, isMounted]);
 
 	useEffect(() => {
 		setIsMounted(false);

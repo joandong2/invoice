@@ -127,7 +127,7 @@ const AddInvoice = () => {
 				<h4 className="text-[#7c5dfa] font-bold mb-2">Bill To</h4>
 				<span className="form-control w-full">
 					<span className="label-text text-[#7e88c3] font-medium">
-						Client's Name
+						{`Client's Name`}
 					</span>
 					<input
 						className="input input-bordered w-full"
@@ -142,7 +142,7 @@ const AddInvoice = () => {
 				<span>
 					<label className="form-control w-full">
 						<span className="label-text text-[#7e88c3] font-medium">
-							Client's Email
+							{`Client's Email`}
 						</span>
 						<input
 							className="input input-bordered w-full"
@@ -345,7 +345,7 @@ const AddInvoice = () => {
 							type="submit"
 							name="draft"
 							onClick={() => setValue("status", "draft")}
-							className="btn text-[16px] text-white font-bold bg-[#373b53] rounded-[25px] py-4 px-8 border-none"
+							className="btn text-[16px] text-white font-bold bg-[#373b53] rounded-[25px] py-4 px-8 border-none "
 						>
 							Save as Draft
 						</button>

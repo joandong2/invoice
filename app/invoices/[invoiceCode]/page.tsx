@@ -88,7 +88,10 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 									</span>
 									{invoice.invoiceItems.length > 0
 										? invoice.invoiceItems.map((item: Item, index) => (
-												<span className="md:table-row flex gap-6 justify-between w-full mb-2 md:mb-0 md:gap-0" key={index}>
+												<span
+													className="md:table-row flex gap-6 justify-between w-full mb-2 md:mb-0 md:gap-0"
+													key={index}
+												>
 													<span className="table-cell black-text font-bold text-[16px]">
 														{item.itemName}
 													</span>
@@ -130,7 +133,7 @@ const Page = async ({ params }: { params: { invoiceCode: string } }) => {
 				) : (
 					<>
 						<span>
-							"There is an error with this invoice!"{" "}
+							{`"There is an error with this invoice!"`}{" "}
 							<Link href="/" className="text-red ml-4">
 								Homepage
 							</Link>

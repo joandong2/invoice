@@ -61,7 +61,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 			// Unsubscribe from the subscription when the component unmounts
 			subscription.unsubscribe();
 		};
-	}, [watch, setItemsList, setIsMounted]);
+	}, [watch, setItemsList, setIsMounted, invoice]);
 
 	const processForm: SubmitHandler<FormValues> = async (data) => {
 		const result = await editInvoice(data);
@@ -159,7 +159,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 						<h4 className="text-[#7c5dfa] font-bold mb-2">Bill To</h4>
 						<span className="form-control w-full">
 							<span className="label-text text-[#7e88c3] font-medium">
-								Client's Name
+								{`Client's Name`}
 							</span>
 							<input
 								className="input input-bordered w-full"
@@ -175,7 +175,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 						<span>
 							<label className="form-control w-full">
 								<span className="label-text text-[#7e88c3] font-medium">
-									Client's Email
+									{`Client's Email`}
 								</span>
 								<input
 									className="input input-bordered w-full"
