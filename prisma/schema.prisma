@@ -21,6 +21,7 @@ model Invoice {
   dueDate DateTime
   createdAt DateTime @default(now())
   udpatedAt DateTime @updatedAt
+  expireAt DateTime
   billFromStreetAddress String
   billFromCity String
   billFromPostcode String

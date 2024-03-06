@@ -3,7 +3,7 @@
 import { prisma } from "@/prisma";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
-import { addDays } from "date-fns";
+import { addDays, addHours, addMinutes } from "date-fns";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -41,6 +41,7 @@ export const createInvoice = async (data: Inputs) => {
 						paymentTerms: data.paymentTerms as string,
 						invoiceDate: origDate,
 						dueDate: dueDate,
+						expireAt: addMinutes(new Date(), 1),
 						billFromStreetAddress: data.billFromStreetAddress as string,
 						billFromCity: data.billFromCity as string,
 						billFromPostcode: data.billFromPostcode as string,
@@ -176,7 +177,14 @@ export const paidInvoice = async (data: string) => {
 };
 
 export const deleteInvoice = async (data : string) => {
+	// var arr_excludes = ['OC7HH6','.5PC58SH', 'WERIVU', '.1O62VI1']
 
+	// if (arr_excludes.indexOf(data) > -1) {
+	// 	return {
+	// 		status: 'error',
+	// 		err: 'Cannot delete data!'
+	// 	}
+	// }
 	try {
 		const invoiceItems = await prisma.invoiceItem.findMany({
 			where: {
@@ -222,7 +230,7 @@ export const getInvoices = async ( status?: string[] ) => {
 				},
 			},
 			orderBy: {
-				invoiceDate: "desc",
+				invoiceDate: "asc",
 			},
 			include: {
 				invoiceItems: true,
@@ -243,5 +251,5 @@ export const getInvoice = async (code: string) => {
 		},
 	});
 
-	return invoice
+	return invoice;
 };

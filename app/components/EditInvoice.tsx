@@ -275,7 +275,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 								<select
 									className="select select-bordered w-full"
 									{...register("paymentTerms")}
-									//defaultValue={invoice.paymentTerms}
+									defaultValue={invoice.paymentTerms}
 								>
 									<option value="7">Next 7 Days</option>
 									<option value="14">Next 14 Days</option>

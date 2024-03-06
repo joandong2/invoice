@@ -32,6 +32,11 @@ const Button = ({ invoice }: { invoice: Invoice }) => {
 			console.log(alertState)
 			if(alertState == 'delete') {
 				const result = await deleteInvoice(data.invoiceCode);
+				// if(result?.status === 'error') {
+				// 	result.err ? toast.error(result.err) : toast.error("Error!@")
+				// 	toggleAlert(false);
+				// 	router.refresh();
+				// }
 				if (result?.status === "success") {
 					toast.success("Invoice Deleted", {});
 					toggleAlert(false);
