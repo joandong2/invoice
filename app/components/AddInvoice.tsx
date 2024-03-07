@@ -2,13 +2,14 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-import { createInvoice } from "../../lib/_actions";
+import { createInvoice, createInvoiceDraft } from "../../lib/_actions";
 import { useForm, SubmitHandler, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Invoice } from "@prisma/client";
 
 type FormValues = z.infer<typeof FormDataSchema>;
 
@@ -44,14 +45,18 @@ const AddInvoice = () => {
 	}, [watch]);
 
 	const processEditForm: SubmitHandler<FormValues> = async (data) => {
-		const result = await createInvoice(data);
-		// console.log("result", result);
-		if (result?.status == "success") {
-			toast.success("Invoice Created", {});
-			reset();
-			router.refresh();
-		}
-		//window.location.reload();
+		console.log('data', data);
+		// const result = await createInvoice(data);
+		// if (result?.status == "success") {
+		// 	toast.success("Invoice Created", {});
+		// 	reset();
+		// 	router.refresh();
+		// }
+	};
+
+	const submitAsDraft = () => {
+		// console.log("data", itemsList);
+		createInvoiceDraft(itemsList);
 	};
 
 	return (
@@ -340,15 +345,15 @@ const AddInvoice = () => {
 						</button>
 					</span>
 					<span className="flex gap-4 justify-end w-full md:w-auto">
-						<button
-							{...register("status")}
-							type="submit"
-							name="draft"
-							onClick={() => setValue("status", "draft")}
+						<span
+							//type="submit"
+							//name="draft"
+							// onClick={() => setValue("status", "draft")}
+							onClick={() => submitAsDraft()}
 							className="btn text-[16px] text-white font-bold bg-[#373b53] rounded-[25px] py-4 px-8 border-none "
 						>
 							Save as Draft
-						</button>
+						</span>
 						<button
 							{...register("status")}
 							type="submit"
