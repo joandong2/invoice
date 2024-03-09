@@ -45,13 +45,13 @@ const AddInvoice = () => {
 	}, [watch]);
 
 	const processEditForm: SubmitHandler<FormValues> = async (data) => {
-		console.log('data', data);
-		// const result = await createInvoice(data);
-		// if (result?.status == "success") {
-		// 	toast.success("Invoice Created", {});
-		// 	reset();
-		// 	router.refresh();
-		// }
+		// console.log('data', data);
+		const result = await createInvoice(data);
+		if (result?.status == "success") {
+			toast.success("Invoice Created", {});
+			reset();
+			router.refresh();
+		}
 	};
 
 	const submitAsDraft = () => {

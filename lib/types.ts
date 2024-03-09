@@ -18,7 +18,6 @@ export interface Invoice {
 	dueDate: Date;
 	createdAt: Date;
 	udpatedAt: Date;
-	expireAt: Date;
 	billFromStreetAddress: string;
 	billFromCity: string;
 	billFromPostcode: string;
