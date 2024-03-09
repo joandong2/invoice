@@ -55,8 +55,16 @@ const AddInvoice = () => {
 	};
 
 	const submitAsDraft = () => {
-		// console.log("data", itemsList);
-		createInvoiceDraft(itemsList);
+		if(itemsList.length === 0) {
+			toast.error("Please add input to fields", {});
+			return;
+		} else {
+			setValue("status", "draft");
+			createInvoiceDraft(itemsList);
+			reset();
+			router.refresh();
+		}
+
 	};
 
 	return (

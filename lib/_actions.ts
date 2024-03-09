@@ -72,10 +72,8 @@ export const createInvoice = async (data: Inputs) => {
 export const createInvoiceDraft = async (data : Inputs) => {
 
 	try {
-		if (data.itemLists.length < 0) {
-			return { success: false, error: "Item count must be greater than 0!" };
-		} else {
-			// insert to database each items
+		// insert to database each items
+		if(data.itemLists.length > 0) {
 			for (let i = 0; i < Number(data.itemLists.length); i++) {
 				await prisma.invoiceItem.create({
 					data: {
@@ -86,44 +84,44 @@ export const createInvoiceDraft = async (data : Inputs) => {
 					},
 				});
 			}
+		}
 
-			const origDate = new Date(data.invoiceDate);
-			const dueDate = addDays(origDate, Number(data.paymentTerms));
+		const origDate = data.invoiceDate ?  new Date(data.invoiceDate) : new Date();
+		const dueDate = addDays(origDate, Number(data.paymentTerms));
 
-			const newInvoice = await prisma.invoice.create({
-				data: {
-					invoiceCode: data.invoiceCode as string,
-					description: data.description as string,
-					status: 'draft',
-					amount: Number(
-						data.itemLists.reduce(
-							(accum, item) => accum + item.itemPrice * item.itemQuantity,
-							0
-						)
-					),
-					paymentTerms: data.paymentTerms as string,
-					invoiceDate: origDate,
-					dueDate: dueDate,
-					expireAt: addMinutes(new Date(), 1),
-					billFromStreetAddress: data.billFromStreetAddress as string,
-					billFromCity: data.billFromCity as string,
-					billFromPostcode: data.billFromPostcode as string,
-					billFromCountry: data.billFromCountry as string,
-					clientEmail: data.clientEmail as string,
-					clientName: data.clientName as string,
-					clientStreetAddress: data.clientStreetAddress as string,
-					clientCity: data.clientCity as string,
-					clientPostCode: data.clientPostCode as string,
-					clientCountry: data.clientCountry as string,
-				},
-			});
+		const newInvoice = await prisma.invoice.create({
+			data: {
+				invoiceCode: data.invoiceCode as string,
+				description: data.description as string,
+				status: "draft",
+				amount: Number(
+					data.itemLists.reduce(
+						(accum, item) => accum + item.itemPrice * item.itemQuantity,
+						0
+					)
+				),
+				paymentTerms: data.paymentTerms as string,
+				invoiceDate: origDate ? origDate : new Date(),
+				dueDate: dueDate ? dueDate : new Date(),
+				expireAt: addMinutes(new Date(), 1),
+				billFromStreetAddress: data.billFromStreetAddress as string,
+				billFromCity: data.billFromCity as string,
+				billFromPostcode: data.billFromPostcode as string,
+				billFromCountry: data.billFromCountry as string,
+				clientEmail: data.clientEmail as string,
+				clientName: data.clientName as string,
+				clientStreetAddress: data.clientStreetAddress as string,
+				clientCity: data.clientCity as string,
+				clientPostCode: data.clientPostCode as string,
+				clientCountry: data.clientCountry as string,
+			},
+		});
 
-			if (newInvoice) {
-				//revalidatePath('/')
-				return {
-					status: "success",
-				};
-			}
+		if (newInvoice) {
+			//revalidatePath('/')
+			return {
+				status: "success",
+			};
 		}
 	} catch (error) {
 		console.error("Error editing invoice:", error);
