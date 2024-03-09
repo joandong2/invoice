@@ -22,6 +22,7 @@ export async function DELETE(req: Request) {
             if(deleteUsers) {
                 return new Response('Deleted Successfully', { status: 200})
             }
+
         }
 
 
@@ -32,5 +33,4 @@ export async function DELETE(req: Request) {
         return new Response("Internal server error", { status : 500})
     }
 
-	return NextResponse.json({ ok: true });
 }
