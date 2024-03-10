@@ -348,7 +348,7 @@ const EditInvoice = ({invoice} : {invoice : Invoice}) => {
 												className="input input-bordered w-full"
 											/>
 										</span>
-										<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center">
+										<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center black-text">
 											{itemsList?.itemLists && itemsList.itemLists.length > 0
 												? (
 														Number(itemsList.itemLists[index]?.itemPrice) *

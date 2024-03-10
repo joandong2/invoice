@@ -315,7 +315,7 @@ const AddInvoice = () => {
 											className="input input-bordered w-full"
 										/>
 									</span>
-									<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center">
+									<span className="hidden total col-span-1 bold text-[15px] tracking-[.5px] md:flex flex-col justify-center black-text">
 										{itemsList.itemLists && itemsList.itemLists.length > index
 											? (
 													Number(itemsList.itemLists[index].itemPrice) *
@@ -353,7 +353,10 @@ const AddInvoice = () => {
 				</span>
 				<span className="md:grid md:grid-cols-2">
 					<span>
-						<span onClick={() => discard()} className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] border-none w-full md:w-auto mb-4 md:mb-0">
+						<span
+							onClick={() => discard()}
+							className="btn text-[16px] text-[#7e88c3] font-bold bg-[#f9fafe] rounded-[25px] border-none w-full md:w-auto mb-4 md:mb-0"
+						>
 							Discard
 						</span>
 					</span>
