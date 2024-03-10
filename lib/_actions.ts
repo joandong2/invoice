@@ -4,7 +4,6 @@ import { prisma } from "@/prisma";
 import { z } from "zod";
 import { FormDataSchema } from "@/lib/schema";
 import { addDays, addMinutes } from "date-fns";
-import { Invoice } from "./types";
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
