@@ -24,10 +24,6 @@ export async function DELETE(req: Request) {
             }
 
         }
-
-
-
-
     } catch (err) {
         console.error(err);
         return new Response("Internal server error", { status : 500})
