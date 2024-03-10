@@ -14,10 +14,10 @@ export async function DELETE(req: Request) {
             });
         }
 
-        const invoiceItems = await prisma.invoiceItem.findMany({});
+        const invoiceItems = await prisma.invoiceItem.deleteMany();
 
         if(invoiceItems) {
-            const deleteUsers = await prisma.invoice.deleteMany({});
+            const deleteUsers = await prisma.invoice.deleteMany();
 
             if(deleteUsers) {
                 return new Response('Deleted Successfully', { status: 200})
